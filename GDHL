@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gonzalo Díaz-Heredero López | GDHL</title>
+
+  <!-- React & ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Lato', sans-serif; background-color: #f8fafc; }
+    h1,h2,h3,h4,.serif { font-family: 'Playfair Display', serif; }
+    .fade-in { animation: fadeIn 0.5s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+    .legal-scroll::-webkit-scrollbar { width: 8px; }
+    .legal-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+    .legal-scroll::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+    .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // =========================
+    // ICONS (ahora aceptan props/className)
+    // =========================
+    const Icons = {
+      Scale: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="M7 21h10"/>
+          <path d="M12 3v18"/>
+          <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+        </svg>
+      ),
+      BookOpen: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      ),
+      Award: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="12" cy="8" r="7"/>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+        </svg>
+      ),
+      Briefcase: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      ),
+      Mail: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="20" height="16" x="2" y="4" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      ),
+      Menu: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      ),
+      X: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M18 6 6 18"/>
+          <path d="m6 6 12 12"/>
+        </svg>
+      ),
+      Globe: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+          <path d="M2 12h20"/>
+        </svg>
+      ),
+      MapPin: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      ),
+      Banknote: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="20" height="12" x="2" y="6" rx="2"/>
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M6 12h.01M18 12h.01"/>
+        </svg>
+      ),
+      Plane: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M10 21v-6l-7-3V9l7 3V3l4 2v7l7 3v3l-7-3v6z"/>
+        </svg>
+      ),
+      FileText: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      ),
+      User: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      ),
+      Home: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      ),
+      Percent: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <line x1="19" x2="5" y1="5" y2="19"/>
+          <circle cx="6.5" cy="6.5" r="2.5"/>
+          <circle cx="17.5" cy="17.5" r="2.5"/>
+        </svg>
+      ),
+      Building: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+          <path d="M9 22v-4h6v4"/>
+          <path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/>
+          <path d="M12 10h.01"/><path d="M12 14h.01"/>
+          <path d="M16 10h.01"/><path d="M16 14h.01"/>
+          <path d="M8 10h.01"/><path d="M8 14h.01"/>
+        </svg>
+      ),
+      Scroll: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M8 2h8a4 4 0 0 1 4 4v16l-6-2-6 2V6a4 4 0 0 1 4-4Z"/>
+          <path d="M8 2a4 4 0 0 0-4 4v16l6-2"/>
+        </svg>
+      ),
+      GitMerge: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="18" cy="18" r="3"/>
+          <circle cx="6" cy="6" r="3"/>
+          <path d="M6 21V9a9 9 0 0 0 9 9"/>
+        </svg>
+      ),
+      Share2: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+          <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+        </svg>
+      ),
+      MoreHorizontal: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="12" cy="12" r="1"/>
+          <circle cx="19" cy="12" r="1"/>
+          <circle cx="5" cy="12" r="1"/>
+        </svg>
+      ),
+      Landmark: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <line x1="3" x2="21" y1="22" y2="22"/>
+          <line x1="6" x2="6" y1="18" y2="11"/>
+          <line x1="10" x2="10" y1="18" y2="11"/>
+          <line x1="14" x2="14" y1="18" y2="11"/>
+          <line x1="18" x2="18" y1="18" y2="11"/>
+          <polygon points="12 2 20 7 4 7"/>
+        </svg>
+      ),
+      Gavel: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m14.5 12.5-8 8a2.121 2.121 0 0 1-3-3l8-8"/>
+          <path d="m16 16 6-6"/>
+          <path d="m8 8 6-6"/>
+          <path d="m9 7 8 8"/>
+          <path d="m21 11-8-8"/>
+        </svg>
+      ),
+      Cpu: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="16" height="16" x="4" y="4" rx="2"/>
+          <rect width="6" height="6" x="9" y="9" rx="1"/>
+          <path d="M15 2v2"/><path d="M15 20v2"/>
+          <path d="M2 15h2"/><path d="M2 9h2"/>
+          <path d="M20 15h2"/><path d="M20 9h2"/>
+          <path d="M9 2v2"/><path d="M9 20v2"/>
+        </svg>
+      ),
+    };
+
+    // =========================
+    // TRANSLATIONS (añadidas claves UI + modal servicios + legal modal)
+    // =========================
+    const translations = {
+      es: {
+        meta: { title: "Gonzalo Díaz-Heredero López | GDHL" },
+        nav: { home:"Inicio", profile:"Perfil", awards:"Premios", publications:"Publicaciones", tax:"Asesoramiento Fiscal", legal:"Asesoramiento Jurídico", contact:"Contacto", tagline:"Legal & Tax" },
+        ui: { clickMore:"Click para más información", clickSeeAll:"... click para ver todos los servicios", email:"Email", linkedin:"LinkedIn" },
+        serviceModal: { keyPoints:"Puntos clave", cta:"Solicitar asesoramiento" },
+        legalModal: {
+          title: "Aviso legal y condiciones de uso del sitio web",
+          note: null,
+          sections: [
+            { h:"1. Datos identificativos", p:[
+              "En cumplimiento de lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE), se informa de los siguientes datos identificativos del titular del sitio web.",
+              "Titular del sitio web: Gonzalo Díaz-Heredero López",
+              "Condición profesional: Jurista en vías de colegiación como abogado",
+              "Correo electrónico de contacto: diazheredero01@gmail.com",
+              "Ámbito territorial: España",
+              "El presente Aviso Legal regula el acceso, navegación y uso del sitio web, así como las responsabilidades derivadas de la utilización de sus contenidos."
+            ]},
+            { h:"2. Condición de usuario", p:[
+              "El acceso y/o uso de este sitio web atribuye la condición de usuario, que acepta, desde dicho acceso y/o uso, las condiciones aquí reflejadas.",
+              "Si el usuario no estuviera de acuerdo con el contenido del presente Aviso Legal, deberá abstenerse de utilizar el sitio web."
+            ]},
+            { h:"3. Objeto del sitio web", p:[
+              "Este sitio web tiene carácter informativo y divulgativo, y está destinado a ofrecer información sobre la actividad profesional del titular, así como contenidos de análisis jurídico, fiscal y académico.",
+              "La información publicada no constituye asesoramiento jurídico personalizado, ni supone la formalización de una relación abogado-cliente o de prestación de servicios profesionales."
+            ]},
+            { h:"4. Alcance profesional y limitaciones", p:[
+              "El titular del sitio web no presta servicios de defensa ni representación legal reservados a la abogacía colegiada.",
+              "Cualquier eventual prestación de servicios jurídicos personalizados quedará condicionada a la formalización previa del correspondiente encargo profesional y, cuando resulte necesario, a la coordinación con profesionales debidamente colegiados."
+            ]},
+            { h:"5. Uso del sitio web", p:[
+              "El usuario se compromete a utilizar el sitio web de conformidad con la ley, el presente Aviso Legal, la moral, el orden público y las buenas costumbres generalmente aceptadas."
+            ], list:[
+              "Utilizar el sitio web con fines ilícitos o contrarios a la buena fe.",
+              "Introducir virus o cualquier otro sistema que pueda causar daños en los sistemas del titular o de terceros.",
+              "Difundir contenidos ofensivos, discriminatorios o contrarios a derechos fundamentales.",
+              "Reproducir, distribuir o modificar los contenidos sin autorización expresa."
+            ]},
+            { h:"6. Propiedad intelectual e industrial", p:[
+              "Todos los contenidos del sitio web (textos, artículos, diseños, estructura, logotipos y demás elementos) son titularidad de Gonzalo Díaz-Heredero López o de terceros que han autorizado su uso, y se encuentran protegidos por la normativa de propiedad intelectual e industrial.",
+              "Queda prohibida su reproducción, distribución, comunicación pública o transformación sin autorización expresa del titular, salvo para uso personal y privado del usuario."
+            ]},
+            { h:"7. Enlaces a terceros", p:[
+              "El sitio web puede incluir enlaces a páginas de terceros (revistas jurídicas, boletines oficiales, tribunales, organismos públicos u otros recursos).",
+              "El titular no se responsabiliza del contenido, exactitud, disponibilidad o políticas de privacidad de dichos sitios externos, siendo responsabilidad del usuario su acceso y uso."
+            ]},
+            { h:"8. Protección de datos personales", p:[
+              "El tratamiento de los datos personales recabados a través del sitio web se regirá por lo dispuesto en la Política de Privacidad, que el usuario debe consultar de forma expresa.",
+              "Los datos facilitados a través del formulario de contacto se tratarán con la finalidad de gestionar solicitudes de contacto profesional, sin cesión a terceros salvo obligación legal."
+            ]},
+            { h:"9. Cookies y analítica", p:[
+              "Este sitio web puede utilizar herramientas de analítica web de carácter anónimo y respetuoso con la privacidad, como Plausible Analytics.",
+              "En principio, no se utilizan cookies propias ni de terceros con fines publicitarios. En caso de que se implementen cookies en el futuro, se informará debidamente al usuario mediante la correspondiente Política de Cookies."
+            ]},
+            { h:"10. Exclusión de responsabilidad", p:[
+              "El titular no garantiza la inexistencia de errores en el acceso al sitio web ni la completa actualización de sus contenidos, aunque realizará los esfuerzos razonables para corregirlos cuando sea necesario.",
+              "El uso de la información contenida en este sitio web se realiza bajo la exclusiva responsabilidad del usuario.",
+              "El titular no se hace responsable de las decisiones adoptadas en base a dicha información."
+            ]},
+            { h:"11. Modificación del Aviso Legal", p:[
+              "El titular se reserva el derecho a modificar en cualquier momento el presente Aviso Legal para adaptarlo a cambios normativos o a la evolución del sitio web.",
+              "Se recomienda al usuario revisarlo periódicamente."
+            ]},
+            { h:"12. Legislación aplicable y jurisdicción", p:[
+              "El presente Aviso Legal se rige por la legislación española.",
+              "Para cualquier controversia que pudiera derivarse del acceso o uso del sitio web, las partes se someten a los Juzgados y Tribunales de Madrid, con renuncia expresa a cualquier otro fuero que pudiera corresponderles."
+            ]}
+          ]
+        },
+        hero: {
+          role: "Jurista trilingüe (ES-EN-FR)",
+          subrole: "En vías de colegiación como abogado en la jurisdicción española. Estoy en proceso de especializarme en Derecho Financiero-Tributario y Derecho Procesal, contando con experiencia en planificación fiscal, tanto nacional como internacional, y litigación en los ámbitos Civil y Tributario, orientado a resolver problemas complejos con seguridad jurídica y eficacia.",
+          quote: "Iustitia omnibus, non privilegium paucis.",
+          targetTitle: "Asesoramiento fiscal a personas físicas y personas jurídicas, en particular:",
+          targets: [
+            "Pymes con actividad o proyección internacional",
+            "Profesionales cualificados y directivos",
+            "Autónomos y emprendedores",
+            "Nómadas digitales y trabajadores desplazados",
+            "Socios, administradores y fundadores de sociedades",
+            "Inversores particulares con intereses transfronterizos",
+            "Personas físicas con rentas, patrimonio o residencia fiscal en más de un país"
+          ],
+          cta: "Solicitar Asesoramiento"
+        },
+        profile: {
+          title: "Perfil Profesional",
+          exp: "Experiencia Profesional",
+          edu: "Formación Académica",
+          lang: "Idiomas",
+          jobs: [
+            {
+              company: "Bufete Arroyo Romero",
+              role: "Legal Trainee (6 meses)",
+              desc: "Litigación civil y tributaria",
+              tasks: [
+                "Investigación jurídica (legislación, jurisprudencia y doctrina).",
+                "Elaboración de dictámenes e informes jurídicos.",
+                "Análisis y diseño de estrategias procesales.",
+                "Redacción de escritos procesales: demandas, contestaciones, denuncias, querellas y recursos."
+              ]
+            },
+            {
+              company: "Bové Montero y Asociados",
+              role: "Junior Tax Advisor (2 años)",
+              desc: "",
+              tasks: [
+                "Elaboración de informes tributarios y resolución de consultas.",
+                "Asistencia en inspecciones y procedimientos de comprobación de la Agencia Tributaria.",
+                "Redacción y presentación de recursos y escritos ante la Administración.",
+                "Participación en procesos de due diligence.",
+                "Preparación y revisión de declaraciones fiscales (IS, IRNR, IVA, retenciones, entre otros).",
+                "Asesoramiento fiscal a entidades jurídicas (Impuesto sobre Sociedades, IVA, IRNR, etc.).",
+                "Asesoramiento fiscal a personas físicas (IRPF, Impuesto sobre el Patrimonio, Sucesiones y Donaciones, Modelo 720).",
+                "Análisis de cuestiones relacionadas con fiscalidad internacional (IVA en operaciones intracomunitarias y extracomunitarias, análisis de establecimiento permanente, movilidad internacional, entre otros)."
+              ]
+            }
+          ],
+          education: [
+            {
+              institution: "Universidad Internacional de La Rioja (UNIR)",
+              degree: "Máster de Acceso a la Abogacía y la Procura",
+              details: ["En curso – en vías de colegiación.", "Nota: 9"]
+            },
+            {
+              institution: "Universidad Complutense de Madrid",
+              degree: "Doble Grado en Derecho y Administración y Dirección de Empresas (ADE)",
+              details: [
+                "Programa bilingüe. Nota: 9,15",
+                "Honours in the Bachelor's Thesis in Business Management (Top 1%): \"Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models\"",
+                "Trabajo Fin de Grado de Derecho: \"ANÁLISIS DE LA EXENCIÓN DEL ARTÍCULO 7 P) LIRPF POR RENDIMIENTOS DE TRABAJO OBTENIDOS EN EL EXTRANJERO\". Calificación: 9,5",
+                "Miembro del club de debate",
+                "Estudiante del curso de francés B2.1 en el Centro Superior de Idiomas Modernos (UCM)",
+                "Estudiante del curso de francés B2.2 en el Centro Superior de Idiomas Modernos (UCM)"
+              ]
+            },
+            { institution: "Warsaw School of Economics", degree: "Programa Erasmus", details: ["Nota: 9,5"] },
+            { institution: "St. Michael´s School", degree: "Bachillerato", details: ["Nota: 9,38"] }
+          ]
+        },
+        services: {
+          taxTitle: "Servicios de Asesoramiento Fiscal",
+          taxList: [
+            {
+              title: "Residencia fiscal y cambios de residencia",
+              icon: "MapPin",
+              desc: "Determinar la residencia fiscal es esencial porque define qué impuestos aplican y en qué medida. En España, la residencia fiscal de personas físicas se regula principalmente por la Ley del IRPF (art. 9).",
+              list: [
+                "183 días o más de presencia en territorio español en un año natural.",
+                "Que el centro principal de intereses económicos esté en España.",
+                "Que el cónyuge e hijos dependientes residan habitualmente en España."
+              ],
+              endDesc: "La cuestión clave es aplicar estos criterios y desarrollar argumentos técnicos (p. ej., pruebas documentales, análisis de contratos, vida familiar, decisiones económicas) para que la Administración tributaria o un tribunal interpreten correctamente la situación. Esto es especialmente relevante en situaciones mixtas (teletrabajo internacional, desplazamientos frecuentes, expatriados)."
+            },
+            {
+              title: "Tributación de rentas del trabajo",
+              icon: "Banknote",
+              desc: "Este servicio parte de la Ley del IRPF (arts. 17 y ss.) y de los principios de tributación mundial para residentes fiscales. En términos prácticos: si una persona es residente fiscal en España, tributa por todas sus rentas mundiales, incluidas las del extranjero. Si existe un CDI, se aplican reglas específicas.",
+              list: [
+                "La correcta calificación de cada tipo de ingreso.",
+                "La aplicación de exenciones o deducciones internacionales (p. ej., pensiones públicas bajo ciertos tratados).",
+                "Eliminación de doble imposición mediante créditos fiscales o exenciones según el CDI aplicable."
+              ],
+              endDesc: "El enfoque técnico es cuantificar el impacto fiscal y prever contingencias por errores de clasificación o por no aplicar el convenio que corresponde al país implicado."
+            },
+            {
+              title: "Fiscalidad internacional y convenios",
+              icon: "Globe",
+              desc: "Los CDI establecen reglas para evitar que una misma renta sea gravada en dos países. El análisis incluye interpretar el tratado aplicable, la fuente de la renta y el método para eliminar la doble imposición.",
+              list: [
+                "Interpretación de textos de convenio.",
+                "Identificación de la fuente de cada renta.",
+                "Anticipación de conflictos de normativa (p. ej., tratados con reglas especiales)."
+              ]
+            },
+            {
+              title: "Tributación de no residentes",
+              icon: "Plane",
+              desc: "Basado en la Ley del IRNR. El IRNR grava rentas obtenidas en España por no residentes (Modelo 210). Si hay CDI, puede limitar o modificar la tributación.",
+              list: [
+                "Determinar si una renta deriva de fuente española.",
+                "Ajustar la tributación a criterios de territorialidad o pago.",
+                "Aplicar retenciones en pagos a no residentes."
+              ]
+            },
+            {
+              title: "Procedimientos tributarios",
+              icon: "FileText",
+              desc: "Procedimientos regidos por LGT y normativa de desarrollo. Objetivo: estrategia defensiva, reducción de contingencias y control de riesgos sancionadores.",
+              list: [
+                "Interpretar requerimientos de información o justificación.",
+                "Preparar alegaciones (prescripción, motivación, prueba).",
+                "Recursos administrativos (reposición / TEAR) con argumentación sólida."
+              ]
+            },
+            {
+              title: "Fiscalidad de autónomos y profesionales",
+              icon: "User",
+              desc: "Fiscalidad de actividades económicas (IRPF) y reglas de IVA. Prevención de errores que suelen originar ajustes.",
+              list: [
+                "Determinación de actividad económica y obligaciones.",
+                "Gastos deducibles y criterios de afectación.",
+                "Obligaciones formales (libros, facturas, retenciones)."
+              ]
+            },
+            {
+              title: "Fiscalidad inmobiliaria",
+              icon: "Home",
+              desc: "Coordinación de impuestos directos e indirectos: IRPF/IS/IRNR y, según el caso, IVA o ITP-AJD, además de normativa local (IIVTNU). Revisión de contratos, arras y escrituras. Informe de escenarios y puntos críticos."
+            },
+            {
+              title: "IVA y fiscalidad indirecta",
+              icon: "Percent",
+              desc: "Calificación correcta: sujeción, localización, exenciones, inversión del sujeto pasivo y deducción. Auditoría de coherencia contrato–factura–realidad económica. Muy útil en operaciones internacionales o complejas."
+            },
+            {
+              title: "Fiscalidad de sociedades y pymes",
+              icon: "Building",
+              desc: "Apoyo técnico a sociedades y pymes: deducibilidad, coherencia mercantil–contable–fiscal, documentación de operaciones y riesgos recurrentes. Informe práctico y, si procede, borradores técnicos de alegaciones."
+            },
+            {
+              title: "Sucesiones y planificación patrimonial",
+              icon: "Scroll",
+              desc: "Análisis orientado a anticipar impacto tributario en herencias/donaciones. Ordenación documental, escenarios y revisión tributaria de borradores sin sustituir funciones notariales."
+            },
+            {
+              title: "Reestructuraciones y contingencias",
+              icon: "GitMerge",
+              desc: "Análisis de reorganizaciones (encaje fiscal, requisitos, riesgos de regularización). Revisión de motivación económica y coherencia documental. Informes de viabilidad y notas de contingencias."
+            },
+            {
+              title: "Coordinación fiscal internacional",
+              icon: "Share2",
+              desc: "Coordinación con asesores en otras jurisdicciones para una estrategia global coherente y cumplimiento simultáneo."
+            },
+            {
+              title: "Otros asuntos fiscales",
+              icon: "MoreHorizontal",
+              desc: "Consultas tributarias específicas y asesoramiento a medida para supuestos atípicos o complejos."
+            }
+          ],
+          legalTitle: "Servicios de Asesoría Jurídica",
+          legalAreas: [
+            { area:"Derecho Civil", icon:"User", desc:"Contratación civil, relaciones patrimoniales e informes.", items:[
+              "Análisis y revisión de contratos civiles.",
+              "Asesoramiento en relaciones patrimoniales.",
+              "Estudio de situaciones jurídicas personales con relevancia patrimonial.",
+              "Revisión de documentación civil y privada.",
+              "Informes jurídicos en materia civil."
+            ]},
+            { area:"Derecho Laboral", icon:"Briefcase", desc:"Relaciones laborales, contratos, despidos y sanciones.", items:[
+              "Análisis jurídico de relaciones laborales.",
+              "Revisión de contratos de trabajo y pactos laborales.",
+              "Asesoramiento preventivo en materia laboral.",
+              "Análisis de despidos y sanciones disciplinarias.",
+              "Estudio de viabilidad de reclamaciones laborales."
+            ]},
+            { area:"Derecho Administrativo", icon:"Landmark", desc:"Actos administrativos, recursos y escritos en vía administrativa.", items:[
+              "Análisis y revisión de actos administrativos.",
+              "Asesoramiento en procedimientos administrativos.",
+              "Estudio de viabilidad de recursos administrativos.",
+              "Preparación técnica de alegaciones y escritos administrativos.",
+              "Acompañamiento jurídico frente a la Administración Pública.",
+              "Análisis de sanciones y resoluciones administrativas."
+            ]},
+            { area:"Derecho Mercantil", icon:"Briefcase", desc:"Pymes y sociedades: contratos, gobierno corporativo, pactos.", items:[
+              "Asesoramiento jurídico a pymes y sociedades mercantiles.",
+              "Revisión y análisis de contratos mercantiles.",
+              "Pactos entre socios y acuerdos societarios.",
+              "Cuestiones de gobierno corporativo.",
+              "Análisis jurídico previo a operaciones empresariales.",
+              "Coordinación jurídica en la actividad ordinaria de la empresa."
+            ]},
+            { area:"Derecho Penal", icon:"Gavel", desc:"Riesgo penal empresarial y apoyo técnico con coordinación colegiada.", items:[
+              "Análisis jurídico de situaciones con posible relevancia penal.",
+              "Revisión de denuncias, querellas y escritos penales.",
+              "Estudio de riesgos penales en el ámbito empresarial.",
+              "Apoyo técnico en la preparación de estrategias de defensa.",
+              "Coordinación con abogados penalistas colegiados."
+            ]},
+            { area:"Derecho Digital y Nuevas Tecnologías", icon:"Cpu", desc:"Proyectos digitales, RGPD, contratos tech e IA.", items:[
+              "Revisión y elaboración técnica de políticas de privacidad, avisos legales y condiciones de uso.",
+              "Asesoramiento en protección de datos (RGPD y normativa española).",
+              "Análisis de flujos de datos, bases jurídicas y riesgos.",
+              "Revisión de contratos tecnológicos (SaaS, licencias, prestación de servicios).",
+              "Asesoramiento en IA y nuevas tecnologías desde la perspectiva legal y de cumplimiento.",
+              "Elaboración de informes y criterios técnicos para entornos digitales.",
+              "Coordinación con profesionales especializados o abogados colegiados cuando proceda."
+            ]}
+          ]
+        },
+        awards: { list: [
+          {
+            title: "XV Premio Jurídico Internacional ISDE 2025 – Categoría Estudiante",
+            org: "Instituto Superior de Derecho y Economía (ISDE)",
+            desc: "Reconocimiento otorgado al mejor TFG en la categoría Estudiante. El trabajo premiado, «Análisis de la exención del artículo 7 p) de la LIRPF por rendimientos de trabajo obtenidos en el extranjero», fue distinguido por su rigor técnico y su aportación al estudio de una de las exenciones más complejas del IRPF, de especial relevancia en materia de fiscalidad internacional y movilidad de trabajadores expatriados.",
+            links: [
+              { text: "Confilegal", url: "https://confilegal.com/20251206-la-xv-edicion-del-premio-juridico-internacional-2025-de-isde-reivindica-la-moral-como-verdadera-inteligencia/" },
+              { text: "AEDD", url: "https://aedd.org/noticias-derecho-deportivo/noticias-de-actualidad-derecho-deportivo/item/4038-xv-edicion-del-premio-juridico-internacional-isde-2025" },
+              { text: "Lawyerpress", url: "https://www.lawyerpress.com/2025/12/09/isde-entrega-su-premio-juridico-internacional/" },
+              { text: "Derecho UCM", url: "https://derecho.ucm.es/premio-juridico-isde-2025" },
+              { text: "Discurso en YouTube", url: "https://www.youtube.com/watch?v=K8b7u4mSiKM&authuser=0" }
+            ]
+          },
+          {
+            title: "XIII Premios de Emprendimiento Universitario UCM 2025 – Modalidad TFG",
+            org: "Universidad Complutense de Madrid · 96,5/100",
+            desc: "Reconocimiento concedido al TFG «Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-assisted Natural Language Processing Models» por su potencialidad como proyecto de emprendimiento LegalTech (SaaS).",
+            links: [
+              { text: "Resolución Definitiva", url: "https://www.ucm.es/compluemprende/file/xiii-peu-resolucion-definitiva-de-beneficiarios?ver" },
+              { text: "Propuesta Provisional", url: "https://www.ucm.es/compluemprende/file/xiii-peu-propuesta-provisional-de-asignacion-de-beneficiarios-signed?ver" }
+            ]
+          }
+        ]},
+        publications: { list: [
+          {
+            title: "Evaluación de la IA como herramienta durante el TFG fiscal: ¿complemento o sustituto del estudiante?",
+            meta: "Revista e-pública · septiembre de 2025",
+            desc: "Análisis del uso de modelos NLP en un TFG de fiscalidad internacional, metodología de prompt engineering y evaluación de precisión, fiabilidad y relevancia.",
+            links: [{ text: "Leer en e-pública", url: "https://e-publica.unizar.es/es/articulo/evaluacion-de-la-ia-como-herramienta-durante-el-trabajo-fin-de-grado-de-ambito-fiscal-complemento-o-sustituto-del-estudiante" }]
+          },
+          {
+            title: "IVA en operaciones intragrupo: alcance del régimen de sujeto pasivo único según el TJUE (C-184/23)",
+            meta: "Expansión & LEX · 2025",
+            desc: "Comentario jurisprudencial sobre la interpretación del TJUE en materia de IVA intragrupo y sus implicaciones.",
+            links: [
+              { text: "Leer en Expansión", url: "https://www.expansion.com/fiscal/impuestos-y-normativas/2025/03/11/67d0abade5fdea9d328b4586.html" },
+              { text: "Leer en LEX", url: "https://lex.ahk.es/actualidad-juridica/iva-en-operaciones-intragrupo-ultimas-reflexiones-del-tjue" }
+            ]
+          },
+          {
+            title: "Identification of Unconventional Patterns in Double Taxation Agreements...",
+            meta: "TFG · UCM · 2025 · Matrícula de Honor",
+            desc: "Análisis comparado de CDI y Modelo OCDE (2017) apoyado en IA (GPT-4o) aplicada al NLP.",
+            links: [{ text: "Repositorio UCM", url: "https://hdl.handle.net/20.500.14352/118839" }]
+          },
+          {
+            title: "Taller preparatorio del monográfico especial de e-pública sobre usos docentes de IA",
+            meta: "Participación académica",
+            desc: "Intervención en taller preparatorio del número monográfico sobre IA en docencia universitaria.",
+            links: [{ text: "Ver publicación", url: "https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1/details/publications" }]
+          }
+        ]},
+        contact: {
+          title: "Contacto Profesional",
+          intro: "Este formulario tiene por objeto solicitar un primer contacto profesional en relación con los servicios de asesoramiento jurídico y fiscal descritos en esta web. La información facilitada permitirá valorar de forma preliminar la cuestión planteada y determinar, en su caso, los siguientes pasos.",
+          response: "Responderé a la mayor brevedad posible.",
+          fields: {
+            name: "Nombre y apellidos *",
+            email: "Correo electrónico *",
+            phone: "Teléfono de contacto (Opcional, recomendado)",
+            profile: "Perfil del solicitante *",
+            scope: "Ámbito del asunto *",
+            desc: "Breve descripción del asunto (5 a 8 líneas máximo) *",
+            check: "He leído y acepto la Política de Privacidad",
+            submit: "Solicitar contacto profesional"
+          },
+          profileOptions: ["Persona física", "Persona jurídica (empresa / sociedad)", "Profesional o despacho", "Otro"],
+          scopeOptions: [
+            "Residencia fiscal y cambios de residencia",
+            "Tributación de rentas del trabajo",
+            "Fiscalidad internacional y convenios",
+            "Tributación de no residentes",
+            "Procedimientos tributarios",
+            "Fiscalidad de autónomos y profesionales",
+            "Fiscalidad inmobiliaria",
+            "IVA y fiscalidad indirecta",
+            "Fiscalidad de sociedades y pymes",
+            "Sucesiones y planificación patrimonial",
+            "Reestructuraciones y contingencias",
+            "Coordinación fiscal internacional",
+            "Derecho Administrativo",
+            "Derecho Mercantil",
+            "Derecho Civil",
+            "Derecho Laboral",
+            "Derecho Penal",
+            "Derecho Digital y Nuevas Tecnologías",
+            "Otro asunto"
+          ],
+          legal: "El envío de este formulario no implica la aceptación del encargo, ni la existencia de una relación abogado-cliente. La información facilitada será tratada con la finalidad de gestionar la solicitud de contacto y conforme a la normativa vigente en materia de protección de datos. No se prestan, a través de este formulario, servicios de defensa o representación legal reservados a la abogacía colegiada."
+        },
+        footer: { legal:"Aviso Legal y Privacidad", rights:"Todos los derechos reservados." }
+      },
+
+      // ===== EN =====
+      en: {
+        meta: { title: "Gonzalo Díaz-Heredero López | GDHL" },
+        nav: { home:"Home", profile:"Profile", awards:"Awards", publications:"Publications", tax:"Tax Advisory", legal:"Legal Advisory", contact:"Contact", tagline:"Legal & Tax" },
+        ui: { clickMore:"Click for more information", clickSeeAll:"... click to see all services", email:"Email", linkedin:"LinkedIn" },
+        serviceModal: { keyPoints:"Key points", cta:"Request consultation" },
+        legalModal: {
+          title: "Legal notice and terms of use",
+          note: "For legal certainty, the Spanish version prevails. This English version is provided for convenience.",
+          sections: [
+            { h:"1. Website owner details", p:[
+              "Pursuant to Article 10 of Law 34/2002 (LSSI-CE), the following identification details are provided:",
+              "Owner: Gonzalo Díaz-Heredero López",
+              "Professional status: Jurist (bar admission in progress)",
+              "Contact email: diazheredero01@gmail.com",
+              "Territorial scope: Spain",
+              "This legal notice governs access, browsing and use of the website."
+            ]},
+            { h:"2. User status", p:[
+              "Access to and/or use of this website confers the status of user and implies acceptance of these terms.",
+              "If you do not agree, you must refrain from using the website."
+            ]},
+            { h:"3. Purpose of the website", p:[
+              "This website is informational and provides content on the owner's professional activity and legal/tax analysis.",
+              "The information does not constitute personalised legal advice and does not create an attorney-client relationship."
+            ]},
+            { h:"4. Professional scope and limitations", p:[
+              "The owner does not provide legal representation reserved to registered attorneys.",
+              "Any professional engagement will require prior formalisation of the engagement and, where applicable, coordination with duly registered professionals."
+            ]},
+            { h:"5. Use of the website", p:[
+              "Users must use the website in compliance with law, public order and good faith."
+            ], list:[
+              "Using the website for unlawful purposes or contrary to good faith.",
+              "Introducing malware/viruses or any system that may cause damage.",
+              "Disseminating offensive, discriminatory or rights-infringing content.",
+              "Reproducing or distributing content without authorisation."
+            ]},
+            { h:"6. Intellectual property", p:[
+              "All content is owned by Gonzalo Díaz-Heredero López or used with permission and is protected by IP laws.",
+              "Unauthorised reproduction or distribution is prohibited, except for personal/private use."
+            ]},
+            { h:"7. Third-party links", p:[
+              "The website may include links to third-party sites. The owner is not responsible for their content or policies."
+            ]},
+            { h:"8. Data protection", p:[
+              "Personal data processing is governed by the Privacy Policy.",
+              "Data submitted through the contact form is processed to manage contact requests and will not be shared unless legally required."
+            ]},
+            { h:"9. Cookies and analytics", p:[
+              "The website may use privacy-friendly analytics (e.g., Plausible).",
+              "No advertising cookies are used by default. If implemented in the future, users will be properly informed."
+            ]},
+            { h:"10. Disclaimer", p:[
+              "The owner does not guarantee error-free access or that content is fully updated at all times.",
+              "Use of the information is at the user's own risk."
+            ]},
+            { h:"11. Updates", p:[
+              "The owner may update this Legal Notice to reflect legal or website changes. Users should review it periodically."
+            ]},
+            { h:"12. Applicable law and jurisdiction", p:[
+              "Spanish law applies. Any disputes shall be submitted to the Courts and Tribunals of Madrid, Spain."
+            ]}
+          ]
+        },
+        hero: {
+          role: "Trilingual Jurist (ES-EN-FR)",
+          subrole: "In the process of being admitted to the Spanish Bar. Specialising in Financial-Tax Law and Procedural Law, with experience in national and international tax planning and litigation in Civil and Tax matters, focused on solving complex issues with legal certainty and efficiency.",
+          quote: "Iustitia omnibus, non privilegium paucis.",
+          targetTitle: "Tax advice to individuals and legal entities, in particular:",
+          targets: [
+            "SMEs with international activity or projection",
+            "Qualified professionals and executives",
+            "Freelancers and entrepreneurs",
+            "Digital nomads and posted workers",
+            "Partners, directors and founders of companies",
+            "Private investors with cross-border interests",
+            "Individuals with income, assets or tax residence in more than one country"
+          ],
+          cta: "Request Consultation"
+        },
+        profile: { /* reutiliza contenido ES si quieres; aquí mantenemos tu estructura original EN de tu código */ 
+          title:"Professional Profile", exp:"Professional Experience", edu:"Education", lang:"Languages",
+          jobs: [
+            { company:"Bufete Arroyo Romero", role:"Legal Trainee (6 months)", desc:"Civil and Tax Litigation", tasks:[
+              "Legal research (legislation, case law and doctrine).",
+              "Preparation of legal opinions and reports.",
+              "Analysis and design of procedural strategies.",
+              "Drafting of procedural documents: claims, answers, complaints and appeals."
+            ]},
+            { company:"Bové Montero y Asociados", role:"Junior Tax Advisor (2 years)", desc:"", tasks:[
+              "Tax reports and queries.",
+              "Assistance in tax inspections and verification procedures.",
+              "Drafting and filing of appeals and submissions.",
+              "Participation in due diligence processes.",
+              "Preparation and review of returns (CIT, NRIT, VAT, withholdings).",
+              "Tax advice to companies (CIT, VAT, NRIT).",
+              "Tax advice to individuals (PIT, Wealth, Inheritance and Gifts, Form 720).",
+              "International tax matters (VAT cross-border, PE analysis, international mobility)."
+            ]}
+          ],
+          education: [
+            { institution:"UNIR", degree:"Master’s Degree for Access to the Legal Profession", details:["In progress – bar admission pending.","Grade: 9"] },
+            { institution:"Universidad Complutense de Madrid", degree:"Double Degree in Law and Business Administration", details:[
+              "Bilingual programme. Grade: 9.15",
+              "Honours thesis (Top 1%): AI-assisted NLP models and DTAs",
+              "Law thesis: Art. 7p LIRPF exemption. Grade: 9.5",
+              "Debate club member"
+            ]},
+            { institution:"Warsaw School of Economics", degree:"Erasmus Programme", details:["Grade: 9.5"] },
+            { institution:"St. Michael’s School", degree:"High school", details:["Grade: 9.38"] }
+          ]
+        },
+        services: { /* EN simplificado: mantiene lo esencial */
+          taxTitle:"Tax Advisory Services",
+          taxList: [
+            { title:"Tax residence and changes of residence", icon:"MapPin", desc:"Tax residence analysis and documentary strategy for cross-border situations." },
+            { title:"Taxation of employment income", icon:"Banknote", desc:"Classification of employment income, treaty analysis and double taxation relief." },
+            { title:"International taxation and treaties", icon:"Globe", desc:"Interpretation and application of DTAs; source rules and conflict prevention." },
+            { title:"Non-resident taxation", icon:"Plane", desc:"NRIT obligations, withholding strategy and treaty-based relief." },
+            { title:"Tax procedures", icon:"FileText", desc:"Submissions, appeals and procedural strategy before the Tax Agency." },
+            { title:"Freelancers and professionals", icon:"User", desc:"Compliance and optimisation for self-employed and professionals." },
+            { title:"Real estate taxation", icon:"Home", desc:"Coordination of direct/indirect taxation in real estate operations." },
+            { title:"VAT and indirect taxation", icon:"Percent", desc:"VAT qualification, place of supply, exemptions, reverse charge and input VAT." },
+            { title:"Companies and SMEs", icon:"Building", desc:"Corporate tax, recurring advice and risk-focused documentation." },
+            { title:"Inheritance and estate planning", icon:"Scroll", desc:"Scenario analysis and documentation to anticipate tax impact." },
+            { title:"Restructuring and contingencies", icon:"GitMerge", desc:"Restructuring tax analysis and defensive documentation." },
+            { title:"International coordination", icon:"Share2", desc:"Coordination with advisors in other jurisdictions." },
+            { title:"Other tax matters", icon:"MoreHorizontal", desc:"Tailored advice for atypical or complex cases." }
+          ],
+          legalTitle:"Legal Advisory Services",
+          legalAreas: [
+            { area:"Civil Law", icon:"User", desc:"Contracts and patrimonial matters.", items:["Contract review","Patrimonial advice","Legal reports"] },
+            { area:"Labour Law", icon:"Briefcase", desc:"Employment contracts, dismissals and disputes.", items:["Contract review","Dismissals","Claims feasibility"] },
+            { area:"Administrative Law", icon:"Landmark", desc:"Administrative acts and appeals.", items:["Review of acts","Appeals","Submissions"] },
+            { area:"Commercial Law", icon:"Briefcase", desc:"SMEs, contracts and corporate governance.", items:["Commercial contracts","Shareholders’ agreements","Governance"] },
+            { area:"Criminal Law", icon:"Gavel", desc:"Business risk assessment and technical support.", items:["Risk analysis","Review of filings","Coordination with counsel"] },
+            { area:"Digital Law", icon:"Cpu", desc:"Privacy, tech contracts and AI compliance.", items:["Privacy policies","Tech contracts","AI compliance"] }
+          ]
+        },
+        awards: { list: [] },
+        publications: { list: [] },
+        contact: {
+          title:"Professional Contact",
+          intro:"This form is intended to request an initial professional contact regarding the services described on this website.",
+          response:"I will respond as soon as possible.",
+          fields: { name:"Full name *", email:"Email *", phone:"Phone (Optional)", profile:"Applicant profile *", scope:"Scope *", desc:"Brief description (5–8 lines max) *", check:"I have read and accept the Privacy Policy", submit:"Request professional contact" },
+          profileOptions:["Individual","Company","Professional/Firm","Other"],
+          scopeOptions:["Tax residence","Employment income","International taxation","Non-resident taxation","Tax procedures","Self-employed","Real estate","VAT","Companies","Inheritance","Restructuring","International coordination","Administrative","Commercial","Civil","Labour","Criminal","Digital","Other"],
+          legal:"Submission of this form does not imply acceptance of the engagement or an attorney-client relationship."
+        },
+        footer: { legal:"Legal notice & Privacy", rights:"All rights reserved." }
+      },
+
+      // ===== FR =====
+      fr: {
+        meta: { title: "Gonzalo Díaz-Heredero López | GDHL" },
+        nav: { home:"Accueil", profile:"Profil", awards:"Prix", publications:"Publications", tax:"Conseil Fiscal", legal:"Conseil Juridique", contact:"Contact", tagline:"Legal & Tax" },
+        ui: { clickMore:"Cliquez pour plus d’informations", clickSeeAll:"... cliquez pour voir tous les services", email:"Email", linkedin:"LinkedIn" },
+        serviceModal: { keyPoints:"Points clés", cta:"Demander conseil" },
+        legalModal: {
+          title: "Mentions légales et conditions d’utilisation",
+          note: "Pour la sécurité juridique, la version espagnole prévaut. Cette version française est fournie à titre informatif.",
+          sections: [
+            { h:"1. Informations d’identification", p:[
+              "Conformément à la loi espagnole 34/2002 (LSSI-CE), les informations suivantes sont fournies :",
+              "Titulaire : Gonzalo Díaz-Heredero López",
+              "Statut professionnel : juriste (admission au barreau en cours)",
+              "Email : diazheredero01@gmail.com",
+              "Portée territoriale : Espagne",
+              "Ces mentions régissent l’accès, la navigation et l’utilisation du site."
+            ]},
+            { h:"2. Statut d’utilisateur", p:[
+              "L’accès et/ou l’utilisation du site confère la qualité d’utilisateur et implique l’acceptation des présentes conditions.",
+              "En cas de désaccord, veuillez ne pas utiliser le site."
+            ]},
+            { h:"3. Objet du site", p:[
+              "Site à vocation informative : activité professionnelle et contenus d’analyse juridique/fiscale.",
+              "Les informations ne constituent pas un avis juridique personnalisé et ne créent pas de relation avocat-client."
+            ]},
+            { h:"4. Portée et limitations", p:[
+              "Aucune représentation judiciaire réservée aux avocats inscrits n’est fournie via ce site.",
+              "Toute mission éventuelle nécessite une formalisation préalable et, le cas échéant, une coordination avec des professionnels inscrits."
+            ]},
+            { h:"5. Utilisation du site", p:[
+              "L’utilisateur s’engage à utiliser le site conformément à la loi, à l’ordre public et à la bonne foi."
+            ], list:[
+              "Utilisation à des fins illicites ou contraires à la bonne foi.",
+              "Introduction de virus/malwares ou systèmes susceptibles de causer des dommages.",
+              "Diffusion de contenus offensants ou discriminatoires.",
+              "Reproduction ou distribution de contenus sans autorisation."
+            ]},
+            { h:"6. Propriété intellectuelle", p:[
+              "Les contenus sont protégés par le droit de la propriété intellectuelle. Toute utilisation non autorisée est interdite, sauf usage personnel/privé."
+            ]},
+            { h:"7. Liens vers des tiers", p:[
+              "Le site peut contenir des liens externes. Le titulaire n’est pas responsable de leur contenu ni de leurs politiques."
+            ]},
+            { h:"8. Données personnelles", p:[
+              "Le traitement des données est régi par la Politique de confidentialité.",
+              "Les données du formulaire servent uniquement à gérer les demandes de contact, sauf obligation légale."
+            ]},
+            { h:"9. Cookies et analytics", p:[
+              "Le site peut utiliser des outils d’analyse respectueux de la vie privée. Aucun cookie publicitaire par défaut."
+            ]},
+            { h:"10. Responsabilité", p:[
+              "Aucune garantie d’absence d’erreurs ou de mise à jour permanente. L’usage des informations se fait sous la responsabilité de l’utilisateur."
+            ]},
+            { h:"11. Modifications", p:[
+              "Le titulaire peut modifier ces mentions. Il est recommandé de les consulter périodiquement."
+            ]},
+            { h:"12. Droit applicable et juridiction", p:[
+              "Droit espagnol applicable. Litiges soumis aux tribunaux de Madrid (Espagne)."
+            ]}
+          ]
+        },
+        hero: {
+          role:"Juriste trilingue (ES-EN-FR)",
+          subrole:"En cours d’admission au barreau espagnol. Spécialisation en droit fiscal-financier et droit procédural, avec expérience en planification fiscale nationale et internationale et contentieux civil et fiscal.",
+          quote:"Iustitia omnibus, non privilegium paucis.",
+          targetTitle:"Conseil fiscal aux personnes physiques et morales, notamment :",
+          targets:[
+            "PME à activité ou projection internationale",
+            "Professionnels qualifiés et cadres",
+            "Indépendants et entrepreneurs",
+            "Nomades numériques et travailleurs détachés",
+            "Associés, administrateurs et fondateurs",
+            "Investisseurs privés avec intérêts transfrontaliers",
+            "Personnes avec revenus, patrimoine ou résidence fiscale dans plusieurs pays"
+          ],
+          cta:"Demander conseil"
+        },
+        profile: { title:"Profil professionnel", exp:"Expérience", edu:"Formation", lang:"Langues", jobs:[], education:[] },
+        services: {
+          taxTitle:"Services de conseil fiscal",
+          taxList:[
+            { title:"Résidence fiscale", icon:"MapPin", desc:"Analyse de la résidence fiscale et stratégie documentaire." },
+            { title:"Revenus du travail", icon:"Banknote", desc:"Qualification, conventions fiscales et élimination de la double imposition." }
+          ],
+          legalTitle:"Services de conseil juridique",
+          legalAreas:[
+            { area:"Droit civil", icon:"User", desc:"Contrats et patrimoine.", items:["Contrats","Avis","Rapports"] }
+          ]
+        },
+        awards: { list: [] },
+        publications: { list: [] },
+        contact: {
+          title:"Contact professionnel",
+          intro:"Ce formulaire permet de solliciter un premier contact concernant les services décrits sur ce site.",
+          response:"Je répondrai dans les plus brefs délais.",
+          fields:{ name:"Nom et prénom *", email:"Email *", phone:"Téléphone (optionnel)", profile:"Profil *", scope:"Domaine *", desc:"Brève description (5–8 lignes) *", check:"J’ai lu et j’accepte la Politique de confidentialité", submit:"Demander un contact professionnel" },
+          profileOptions:["Personne physique","Société","Professionnel/Cabinet","Autre"],
+          scopeOptions:["Résidence fiscale","Revenus du travail","Fiscalité internationale","Non-résidents","Procédures","Indépendants","Immobilier","TVA","Sociétés","Successions","Restructurations","Coordination","Administratif","Commercial","Civil","Travail","Pénal","Numérique","Autre"],
+          legal:"L’envoi de ce formulaire n’implique pas l’acceptation de la mission ni l’existence d’une relation avocat-client."
+        },
+        footer: { legal:"Mentions légales & Confidentialité", rights:"Tous droits réservés." }
+      }
+    };
+
+    // =========================
+    // COMPONENTS
+    // =========================
+    const LanguageSwitcher = ({ current, setLang }) => (
+      <div className="flex space-x-2 text-sm font-semibold" aria-label="Language switcher">
+        {["es","en","fr"].map(code => (
+          <button
+            key={code}
+            type="button"
+            onClick={() => setLang(code)}
+            className={`px-2 py-1 rounded ${current === code ? "bg-slate-800 text-white" : "text-slate-600 hover:bg-slate-200"}`}
+          >
+            {code.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    );
+
+    const SectionTitle = ({ children }) => (
+      <h2 className="text-3xl font-bold text-slate-800 mb-8 border-b-2 border-amber-600 pb-2 inline-block serif">
+        {children}
+      </h2>
+    );
+
+    const Card = ({ title, subtitle, date, children }) => (
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-100 hover:shadow-md transition-shadow mb-4">
+        <div className="flex justify-between items-start mb-2 flex-wrap">
+          <div className="w-full">
+            <h3 className="text-xl font-bold text-slate-900 serif">{title}</h3>
+            {subtitle && <p className="text-amber-700 font-medium">{subtitle}</p>}
+          </div>
+        </div>
+        {date && <div className="text-sm text-slate-500 bg-slate-50 px-2 py-1 rounded inline-block mb-2">{date}</div>}
+        <div className="text-slate-700 text-sm leading-relaxed mt-2">{children}</div>
+      </div>
+    );
+
+    // =========================
+    // MAIN APP
+    // =========================
+    const App = () => {
+      const [lang, setLang] = useState("es");
+      const [activeSection, setActiveSection] = useState("home");
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      const [showLegal, setShowLegal] = useState(false);
+      const [selectedService, setSelectedService] = useState(null);
+
+      const t = translations[lang];
+
+      // Persist language + set html lang + set title
+      useEffect(() => {
+        const saved = localStorage.getItem("lang");
+        if (saved && translations[saved]) setLang(saved);
+      }, []);
+
+      useEffect(() => {
+        localStorage.setItem("lang", lang);
+        document.documentElement.lang = lang;
+        document.title = t?.meta?.title || "GDHL";
+      }, [lang]);
+
+      const goTo = (id) => {
+        setActiveSection(id);
+        setMobileMenuOpen(false);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const navItems = [
+        { id:"home", label:t.nav.home },
+        { id:"profile", label:t.nav.profile },
+        { id:"awards", label:t.nav.awards },
+        { id:"publications", label:t.nav.publications },
+        { id:"tax", label:t.nav.tax },
+        { id:"legal", label:t.nav.legal },
+        { id:"contact", label:t.nav.contact },
+      ];
+
+      const LegalModal = () => (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto p-8 relative legal-scroll">
+            <button type="button" onClick={() => setShowLegal(false)} className="absolute top-4 right-4 text-slate-500 hover:text-black bg-slate-100 rounded-full p-1" aria-label="Close">
+              <Icons.X className="w-6 h-6" />
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4 serif border-b pb-2">{t.legalModal.title}</h2>
+
+            {t.legalModal.note && (
+              <div className="mb-6 bg-amber-50 border border-amber-200 text-amber-900 text-sm rounded p-3">
+                {t.legalModal.note}
+              </div>
+            )}
+
+            <div className="space-y-6 text-sm text-slate-700 leading-relaxed">
+              {t.legalModal.sections.map((sec, idx) => (
+                <div key={idx}>
+                  <h3 className="font-bold text-slate-900 text-base mb-2">{sec.h}</h3>
+                  {sec.p?.map((line, j) => (
+                    <p key={j} className="mb-2">{line}</p>
+                  ))}
+                  {sec.list && (
+                    <ul className="list-disc pl-5 mt-1">
+                      {sec.list.map((li, k) => <li key={k}>{li}</li>)}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+      const ServiceModal = () => {
+        if (!selectedService) return null;
+        const IconComponent = Icons[selectedService.icon] || Icons.Scale;
+
+        return (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 relative">
+              <button type="button" onClick={() => setSelectedService(null)} className="absolute top-4 right-4 text-slate-500 hover:text-black bg-slate-100 rounded-full p-1" aria-label="Close">
+                <Icons.X className="w-6 h-6" />
+              </button>
+
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-slate-100 rounded-full mr-4">
+                  <IconComponent className="w-8 h-8 text-slate-900"/>
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 serif">{selectedService.title}</h2>
+              </div>
+
+              <div className="text-slate-700 leading-relaxed space-y-4">
+                {selectedService.desc && <p className="text-lg">{selectedService.desc}</p>}
+
+                {selectedService.list && (
+                  <div className="mt-6 bg-slate-50 p-6 rounded-lg border border-slate-100">
+                    <h3 className="font-bold text-slate-900 mb-3 border-b pb-2">{t.serviceModal.keyPoints}</h3>
+                    <ul className="space-y-2">
+                      {selectedService.list.map((item, i) => (
+                        <li key={i} className="flex items-start">
+                          <span className="mr-2 text-amber-600 mt-1">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {selectedService.endDesc && <p className="text-md mt-4 font-medium text-slate-800">{selectedService.endDesc}</p>}
+              </div>
+
+              <div className="mt-8 pt-4 border-t flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => { setSelectedService(null); goTo("contact"); }}
+                  className="bg-slate-900 text-white px-6 py-2 rounded hover:bg-slate-800 transition shadow"
+                >
+                  {t.serviceModal.cta}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const renderContent = () => {
+        switch (activeSection) {
+          case "home":
+            return (
+              <div className="fade-in max-w-4xl mx-auto text-center py-12">
+                <div className="w-32 h-32 mx-auto bg-slate-200 rounded-full mb-6 overflow-hidden flex items-center justify-center text-3xl text-slate-500 font-bold tracking-wide">
+                  GDHL
+                </div>
+
+                <h1 className="text-5xl font-bold text-slate-900 mb-4 serif">Gonzalo Díaz-Heredero López</h1>
+                <p className="text-xl text-slate-600 mb-2 font-medium">{t.hero.role}</p>
+                <p className="text-md text-slate-500 mb-8 max-w-2xl mx-auto leading-relaxed">{t.hero.subrole}</p>
+
+                <blockquote className="italic text-2xl font-serif text-slate-800 border-l-4 border-amber-600 pl-4 py-2 inline-block bg-white shadow-sm mb-12">
+                  "{t.hero.quote}"
+                </blockquote>
+
+                <div className="bg-white p-8 rounded shadow-sm border border-slate-100 text-left mb-10">
+                  <h3 className="font-bold text-lg mb-4 text-slate-800 border-b pb-2">{t.hero.targetTitle}</h3>
+                  <ul className="grid md:grid-cols-2 gap-x-6 gap-y-2">
+                    {t.hero.targets.map((item, idx) => (
+                      <li key={idx} className="flex items-start text-sm text-slate-700">
+                        <span className="mr-2 text-amber-600 mt-1">•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => goTo("contact")}
+                  className="bg-slate-900 text-white px-8 py-3 rounded hover:bg-slate-800 transition shadow-lg text-lg"
+                >
+                  {t.hero.cta}
+                </button>
+              </div>
+            );
+
+          case "profile":
+            return (
+              <div className="fade-in max-w-5xl mx-auto">
+                <SectionTitle>{t.profile.title}</SectionTitle>
+
+                <div className="mb-12">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center text-slate-800 border-b pb-2">
+                    <Icons.Briefcase className="w-6 h-6 mr-2 text-amber-700" /> {t.profile.exp}
+                  </h3>
+
+                  {t.profile.jobs.map((job, i) => (
+                    <div key={i} className="mb-6 bg-white p-6 rounded shadow-sm border border-slate-100">
+                      <div className="flex justify-between flex-wrap mb-2">
+                        <h4 className="text-xl font-bold text-slate-900">{job.company}</h4>
+                        <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded text-sm">{job.role}</span>
+                      </div>
+                      {job.desc && <p className="text-slate-500 text-sm mb-3 italic">{job.desc}</p>}
+                      <ul className="space-y-1">
+                        {job.tasks.map((task, j) => (
+                          <li key={j} className="flex items-start text-sm text-slate-700">
+                            <span className="mr-2 text-slate-400">•</span>
+                            {task}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mb-12">
+                  <h3 className="text-2xl font-bold mb-6 flex items-center text-slate-800 border-b pb-2">
+                    <Icons.BookOpen className="w-6 h-6 mr-2 text-amber-700" /> {t.profile.edu}
+                  </h3>
+
+                  {t.profile.education.map((edu, i) => (
+                    <div key={i} className="mb-4 bg-white p-6 rounded shadow-sm border border-slate-100">
+                      <h4 className="text-xl font-bold text-slate-900 mb-1">{edu.institution}</h4>
+                      <p className="text-amber-700 font-medium mb-2">{edu.degree}</p>
+                      <ul className="space-y-1">
+                        {edu.details.map((det, j) => (
+                          <li key={j} className="text-sm text-slate-700 flex items-start">
+                            <span className="mr-2 text-slate-400">•</span>
+                            <span>{det}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold mb-6 flex items-center text-slate-800 border-b pb-2">
+                    <Icons.Globe className="w-6 h-6 mr-2 text-amber-700" /> {t.profile.lang}
+                  </h3>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white p-4 text-center rounded shadow-sm border border-slate-200">
+                      <div className="font-bold text-slate-800">Español</div>
+                      <div className="text-amber-600 text-sm">Nativo</div>
+                    </div>
+                    <div className="bg-white p-4 text-center rounded shadow-sm border border-slate-200">
+                      <div className="font-bold text-slate-800">English</div>
+                      <div className="text-amber-600 text-sm">C2 Proficiency (CPE)</div>
+                    </div>
+                    <div className="bg-white p-4 text-center rounded shadow-sm border border-slate-200">
+                      <div className="font-bold text-slate-800">Français</div>
+                      <div className="text-amber-600 text-sm">DELF B2</div>
+                    </div>
+                    <div className="bg-white p-4 text-center rounded shadow-sm border border-slate-200">
+                      <div className="font-bold text-slate-800">中文</div>
+                      <div className="text-amber-600 text-sm">Básico</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+
+          case "awards":
+            return (
+              <div className="fade-in max-w-4xl mx-auto">
+                <SectionTitle>{t.nav.awards}</SectionTitle>
+                {t.awards.list.length === 0 ? (
+                  <div className="bg-white p-6 rounded border border-slate-100 text-slate-600">—</div>
+                ) : t.awards.list.map((award, i) => (
+                  <Card key={i} title={award.title} subtitle={award.org}>
+                    <p className="mb-4 text-justify">{award.desc}</p>
+                    <div className="flex flex-wrap gap-3 mt-4">
+                      {award.links.map((link, j) => (
+                        <a key={j} href={link.url} target="_blank" rel="noopener noreferrer"
+                          className="text-xs bg-slate-100 hover:bg-amber-100 text-amber-800 px-3 py-1 rounded transition border border-slate-200">
+                          🔗 {link.text}
+                        </a>
+                      ))}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            );
+
+          case "publications":
+            return (
+              <div className="fade-in max-w-4xl mx-auto">
+                <SectionTitle>{t.nav.publications}</SectionTitle>
+                {t.publications.list.length === 0 ? (
+                  <div className="bg-white p-6 rounded border border-slate-100 text-slate-600">—</div>
+                ) : (
+                  <div className="space-y-6">
+                    {t.publications.list.map((pub, i) => (
+                      <Card key={i} title={pub.title} subtitle={pub.meta}>
+                        <p className="mb-4 text-justify">{pub.desc}</p>
+                        <div className="flex flex-wrap gap-3">
+                          {pub.links.map((link, j) => (
+                            <a key={j} href={link.url} target="_blank" rel="noopener noreferrer"
+                              className="text-xs font-semibold text-amber-700 hover:text-amber-900 border-b border-amber-200 hover:border-amber-900">
+                              {link.text} &rarr;
+                            </a>
+                          ))}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+
+          case "tax":
+            return (
+              <div className="fade-in max-w-6xl mx-auto">
+                <SectionTitle>{t.services.taxTitle}</SectionTitle>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {t.services.taxList.map((item, i) => {
+                    const IconComponent = Icons[item.icon] || Icons.Briefcase;
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => setSelectedService(item)}
+                        className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md border border-slate-100 transition-all duration-300 flex flex-col justify-center items-center text-center group cursor-pointer card-hover"
+                        role="button"
+                        tabIndex="0"
+                      >
+                        <div className="w-12 h-12 bg-slate-50 text-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                          <IconComponent className="w-6 h-6" />
+                        </div>
+                        <p className="text-slate-700 font-medium font-serif text-lg">{item.title}</p>
+                        <p className="text-xs text-slate-400 mt-2 italic">{t.ui.clickMore}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+
+          case "legal":
+            return (
+              <div className="fade-in max-w-6xl mx-auto">
+                <SectionTitle>{t.services.legalTitle}</SectionTitle>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {t.services.legalAreas.map((area, i) => {
+                    const IconComponent = Icons[area.icon] || Icons.Scale;
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => setSelectedService({ title: area.area, desc: area.desc, list: area.items, icon: area.icon })}
+                        className="bg-white rounded-lg shadow-md border-t-4 border-amber-600 overflow-hidden hover:shadow-lg transition-all card-hover cursor-pointer"
+                        role="button"
+                        tabIndex="0"
+                      >
+                        <div className="bg-slate-50 p-4 border-b border-slate-100">
+                          <h4 className="font-bold text-slate-900 text-lg flex items-center">
+                            <IconComponent className="w-5 h-5 mr-2 text-amber-700" />
+                            {area.area}
+                          </h4>
+                        </div>
+                        <div className="p-6">
+                          <ul className="space-y-3">
+                            {area.items.slice(0, 3).map((item, j) => (
+                              <li key={j} className="flex items-start text-slate-600 text-sm">
+                                <span className="mr-2 text-amber-500 mt-0.5">•</span>
+                                {item}
+                              </li>
+                            ))}
+                            {area.items.length > 3 && (
+                              <li className="text-xs text-slate-400 italic mt-2">{t.ui.clickSeeAll}</li>
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+
+          case "contact":
+            return (
+              <div className="fade-in max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <SectionTitle>{t.contact.title}</SectionTitle>
+                <p className="mb-4 text-slate-700">{t.contact.intro}</p>
+
+                <div className="p-3 bg-blue-50 text-blue-800 text-sm rounded mb-6 border border-blue-100 flex items-center">
+                  <Icons.Mail className="w-4 h-4 mr-2"/> {t.contact.response}
+                </div>
+
+                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.contact.fields.name}</label>
+                    <input type="text" required className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 focus:ring-1 focus:ring-slate-800 outline-none" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1">{t.contact.fields.email}</label>
+                      <input type="email" required className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1">{t.contact.fields.phone}</label>
+                      <input type="tel" className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.contact.fields.profile}</label>
+                    <select className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none">
+                      {t.contact.profileOptions.map((option, i) => <option key={i}>{option}</option>)}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.contact.fields.scope}</label>
+                    <select className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none">
+                      {t.contact.scopeOptions.map((option, i) => <option key={i}>{option}</option>)}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{t.contact.fields.desc}</label>
+                    <textarea rows="6" required className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none"></textarea>
+                  </div>
+
+                  <div className="flex items-start bg-slate-50 p-3 rounded border border-slate-100">
+                    <input type="checkbox" required className="mt-1 mr-2" />
+                    <span className="text-sm text-slate-600">
+                      {t.contact.fields.check}{" "}
+                      <button type="button" onClick={() => setShowLegal(true)} className="underline text-amber-700 hover:text-amber-900">
+                        ({t.footer.legal})
+                      </button>
+                    </span>
+                  </div>
+
+                  <button type="submit" className="w-full bg-slate-900 text-white font-bold py-3 rounded hover:bg-slate-800 transition">
+                    {t.contact.fields.submit}
+                  </button>
+                </form>
+
+                <p className="mt-6 text-xs text-slate-400 text-justify border-t pt-4 leading-relaxed">
+                  {t.contact.legal}
+                </p>
+              </div>
+            );
+
+          default:
+            return null;
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Navigation */}
+          <nav className="bg-white shadow-md sticky top-0 z-40 border-b border-slate-100">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="flex justify-between items-center h-20">
+                {/* Logo */}
+                <div className="flex-shrink-0 flex flex-col justify-center cursor-pointer" onClick={() => goTo("home")}>
+                  <span className="font-serif text-xl font-bold text-slate-900 tracking-tight">GDHL</span>
+                  <span className="text-xs text-amber-700 uppercase tracking-widest font-semibold">{t.nav.tagline}</span>
+                </div>
+
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center space-x-8">
+                  <div className="flex space-x-6 text-sm font-medium text-slate-600">
+                    {navItems.map(item => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => goTo(item.id)}
+                        className={`hover:text-amber-700 transition-colors ${activeSection === item.id ? "text-amber-700 font-bold border-b-2 border-amber-700" : ""}`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="h-6 w-px bg-slate-300 mx-4"></div>
+                  <LanguageSwitcher current={lang} setLang={setLang} />
+                </div>
+
+                {/* Mobile Menu Button */}
+                <div className="md:hidden flex items-center">
+                  <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-700 p-2" aria-label="Menu">
+                    {mobileMenuOpen ? <Icons.X className="w-6 h-6" /> : <Icons.Menu className="w-6 h-6" />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Menu Dropdown */}
+            {mobileMenuOpen && (
+              <div className="md:hidden bg-slate-50 border-t">
+                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                  {navItems.map(item => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => goTo(item.id)}
+                      className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-200 rounded"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                  <div className="px-3 py-2">
+                    <LanguageSwitcher current={lang} setLang={setLang} />
+                  </div>
+                </div>
+              </div>
+            )}
+          </nav>
+
+          {/* Main Content */}
+          <main className="flex-grow container mx-auto px-4 py-8">
+            {renderContent()}
+          </main>
+
+          {/* Footer */}
+          <footer className="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+            <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+              <div className="mb-4 md:mb-0 text-sm">
+                &copy; {new Date().getFullYear()} Gonzalo Díaz-Heredero López. {t.footer.rights}
+              </div>
+              <div className="flex space-x-6 text-sm">
+                <a href="mailto:diazheredero01@gmail.com" className="hover:text-white transition">{t.ui.email}</a>
+                <a href="https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">{t.ui.linkedin}</a>
+                <button type="button" onClick={() => setShowLegal(true)} className="hover:text-white transition">{t.footer.legal}</button>
+              </div>
+            </div>
+          </footer>
+
+          {showLegal && <LegalModal />}
+          {selectedService && <ServiceModal />}
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
