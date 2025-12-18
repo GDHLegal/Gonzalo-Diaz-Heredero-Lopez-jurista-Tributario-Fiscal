@@ -86,187 +86,216 @@
             Cpu: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
         };
 
-        // --- DATA & TRANSLATIONS ---
-        const translations = {
-            es: {
-                nav: { home: "Inicio", profile: "Perfil", awards: "Premios", publications: "Publicaciones", tax: "Asesoramiento Fiscal", legal: "Asesoramiento Jurídico", contact: "Contacto" },
-                common: { keyPoints: "Puntos Clave", deliverables: "Entregables Típicos", regulations: "Normativa y criterios clave:", clickMore: "Click para más información", clickMoreLegal: "... click para ver todos los servicios" },
-                hero: {
-                    role: "Jurista trilingüe (ES-EN-FR)",
-                    subrole: "En vías de colegiación como abogado en la jurisdicción española. Estoy en proceso de especializarme en Derecho Financiero-Tributario y Derecho Procesal, contando con experiencia en planificación fiscal, tanto nacional como internacional, y litigación en los ámbitos Civil y Tributario, orientado a resolver problemas complejos con seguridad jurídica y eficacia.",
-                    quote: "Iustitia omnibus, non privilegium paucis.",
-                    targetTitle: "Asesoramiento fiscal a personas físicas y personas jurídicas, en particular:",
-                    targets: [ "Pymes con actividad o proyección internacional", "Profesionales cualificados y directivos", "Autónomos y emprendedores", "Nómadas digitales y trabajadores desplazados", "Socios, administradores y fundadores de sociedades", "Inversores particulares con intereses transfronterizos", "Personas físicas con rentas, patrimonio o residencia fiscal en más de un país" ],
-                    cta: "Solicitar Asesoramiento"
-                },
-                profile: {
-                    title: "Perfil Profesional", exp: "Experiencia Profesional", edu: "Formación Académica", lang: "Idiomas",
-                    jobs: [
-                        { company: "Bufete Arroyo Romero", role: "Legal Trainee (6 meses)", desc: "Litigación civil y tributaria", tasks: [ "Investigación jurídica (legislación, jurisprudencia y doctrina).", "Elaboración de dictámenes e informes jurídicos.", "Análisis y diseño de estrategias procesales.", "Redacción de escritos procesales: demandas, contestaciones, denuncias, querellas y recursos." ] },
-                        { company: "Bové Montero y Asociados", role: "Junior Tax Advisor (2 años)", desc: "", tasks: [ "Elaboración de informes tributarios y resolución de consultas.", "Asistencia en inspecciones y procedimientos de comprobación de la Agencia Tributaria.", "Redacción y presentación de recursos y escritos ante la Administración.", "Participación en procesos de due diligence.", "Preparación y revisión de declaraciones fiscales (IS, IRNR, IVA, retenciones, entre otros).", "Asesoramiento fiscal a entidades jurídicas (Impuesto sobre Sociedades, IVA, IRNR, etc.).", "Asesoramiento fiscal a personas físicas (IRPF, Impuesto sobre el Patrimonio, Sucesiones y Donaciones, Modelo 720).", "Análisis de cuestiones relacionadas con fiscalidad internacional (IVA en operaciones intracomunitarias y extracomunitarias, análisis de establecimiento permanente, movilidad internacional, entre otros)." ] }
-                    ],
-                    education: [
-                        { institution: "Universidad Internacional de La Rioja (UNIR)", degree: "Máster de Acceso a la Abogacía y la Procura", details: ["En curso – en vías de colegiación.", "Nota: 9"] },
-                        { institution: "Universidad Complutense de Madrid", degree: "Doble Grado en Derecho y Administración y Dirección de Empresas (ADE)", details: [ "Programa bilingüe. Nota: 9,15", "Honours in the Bachelor's Thesis in Business Management (Top 1%): \"Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models\"", "Trabajo Fin de Grado de Derecho: \"ANÁLISIS DE LA EXENCIÓN DEL ARTÍCULO 7 P) LIRPF POR RENDIMIENTOS DE TRABAJO OBTENIDOS EN EL EXTRANJERO\". Calificación: 9,5", "Miembro del club de debate", "Estudiante del curso de francés B2.1 en el Centro Superior de Idiomas Modernos (UCM)", "Estudiante del curso de francés B2.2 en el Centro Superior de Idiomas Modernos (UCM)" ] },
-                        { institution: "Warsaw School of Economics", degree: "Programa Erasmus", details: ["Nota: 9,5"] },
-                        { institution: "St. Michael´s School", degree: "Bachillerato", details: ["Nota: 9,38"] }
-                    ]
-                },
-                services: {
-                    taxTitle: "Servicios de Asesoramiento Fiscal",
-                    taxList: [
-                        { 
-                            title: "Residencia fiscal y cambios de residencia", icon: "MapPin", 
-                            desc: "Determinar la residencia fiscal es esencial porque define qué impuestos aplican y en qué medida. En España, la residencia fiscal de personas físicas se regula principalmente por la Ley del IRPF (art. 9), que fija criterios como:",
-                            list: [ "183 días o más de presencia en territorio español en un año natural.", "Que el centro principal de intereses económicos esté en España.", "Que el cónyuge e hijos dependientes residan habitualmente en España." ],
-                            endDesc: "La cuestión clave es aplicar estos criterios y desarrollar argumentos técnicos (p. ej., pruebas documentales, análisis de contratos, vida familiar, decisiones económicas) para que la Administración tributaria o un tribunal interpreten correctamente la situación. Esto es especialmente relevante en situaciones mixtas (teletrabajo internacional, desplazamientos frecuentes, expatriados)."
-                        },
-                        { 
-                            title: "Tributación de rentas del trabajo", icon: "Banknote", 
-                            desc: "Este servicio parte de la Ley del IRPF (arts. 17 y ss.) y de los principios de tributación mundial para residentes fiscales. En términos prácticos: Si una persona es residente fiscal en España, tributa por todas sus rentas mundiales, incluidas las del extranjero (salarios, pensiones, bonus, beneficios en especie). Si existe un Convenio para evitar la doble imposición, se aplican reglas específicas. El análisis incluye:",
-                            list: [ "La correcta calificación de cada tipo de ingreso.", "La aplicación de exenciones o deducciones internacionales (p. ej., pensiones públicas bajo ciertos tratados).", "Eliminación de doble imposición mediante créditos fiscales o exenciones según el CDI aplicable." ],
-                            endDesc: "El enfoque técnico es cuantificar el impacto fiscal y prever contingencias por errores de clasificación o por no aplicar el convenio que corresponde al país implicado."
-                        },
-                        { 
-                            title: "Fiscalidad internacional y convenios", icon: "Globe", 
-                            desc: "Los Convenios para evitar la doble imposición (CDI) son acuerdos bilaterales que establecen reglas claras para evitar que una misma renta sea gravada en dos países. Estos tratados definen:",
-                            list: [ "Residencia fiscal del contribuyente.", "Qué Estado tiene potestad sobre distintos tipos de rentas (trabajo, dividendos, intereses, pensiones, ganancias de capital).", "Métodos para evitar la doble imposición: exención o crédito fiscal." ],
-                            endDesc: "El análisis técnico incluye interpretar textos de convenio, identificar la fuente de cada renta y anticipar conflictos de normativa (p. ej., tratados con países con reglas especiales)."
-                        },
-                        { 
-                            title: "Tributación de no residentes", icon: "Plane", 
-                            desc: "Este servicio se basa en la Ley del Impuesto sobre la Renta de No Residentes (IRNR) y su reglamento. Puntos clave: El IRNR grava las rentas obtenidas en España por personas o entidades no residentes. Existen tasas específicas y obligaciones de presentación de declaraciones (Modelo 210). Si hay un CDI, puede limitar o modificar la tributación. Cuestiones frecuentes:",
-                            list: [ "Determinar si una renta deriva de fuente española.", "Ajustar la tributación a los criterios de territorialidad o de pago.", "Aplicar retenciones a pagadores españoles en pagos a no residentes (retenciones en la fuente)." ]
-                        },
-                        { 
-                            title: "Procedimientos tributarios", icon: "FileText", 
-                            desc: "Los procedimientos se rigen por la Ley General Tributaria (LGT) y su normativa de desarrollo. Este servicio consiste en:",
-                            list: [ "Interpretar requerimientos de información o justificación.", "Preparar alegaciones documentadas y alegar sobre cuestiones como prescripción, motivación de hechos y valoración de pruebas.", "Redactar recursos administrativos (recurso de reposición o recurso ante el TEAR) con argumentos sólidos basados en normativa y doctrina administrativa consolidada." ],
-                            endDesc: "El objetivo es diseñar una estrategia defensiva preventiva ante la administración, reduciendo riesgos de sanciones injustificadas."
-                        },
-                        { 
-                            title: "Fiscalidad de autónomos y profesionales", icon: "User", 
-                            desc: "La fiscalidad de actividades profesionales se basa en LIRPF (rendimientos de actividades económicas) y normativa de IVA. Incluye:",
-                            list: [ "Determinar si una actividad se considera económica según normativa.", "Establecer rígidamente qué gastos son deducibles y bajo qué criterios (área de afectación).", "Revisar cumplimiento de obligaciones formales (libros, facturas, retenciones)." ],
-                            endDesc: "Este servicio previene errores comunes que suelen desencadenar ajustes en comprobaciones."
-                        },
-                        { 
-                            title: "Fiscalidad inmobiliaria", icon: "Home", 
-                            desc: "Coordinación de la tributación directa e indirecta de operaciones inmobiliarias para fijar un tratamiento coherente con los hechos y minimizar contingencias. Incluye:",
-                            list: [ "Determinar el impacto en IRPF / Impuesto sobre Sociedades / IRNR, según el perfil del titular.", "Definir si la operación encaja en IVA o en ITP-AJD (y sus consecuencias).", "Valorar la incidencia de la normativa local, especialmente plusvalía municipal (IIVTNU) cuando proceda.", "Revisar contratos, arras, escrituras y documentación previa para alinear forma y realidad económica." ],
-                            deliverables: [ "Informe breve de escenarios, puntos críticos y documentación recomendada antes de comprar, vender o alquilar.", "Checklist de soporte documental “defendible” en caso de comprobación." ],
-                            regulations: "Ley IRPF 35/2006; Ley IS 27/2014; TRLIRNR (RDL 5/2004); Ley IVA 37/1992; TRITP-AJD (RDL 1/1993); TRLRHL (RDL 2/2004) y ajustes recientes del IIVTNU"
-                        },
-                        { 
-                            title: "IVA y fiscalidad indirecta", icon: "Percent", 
-                            desc: "Correcta calificación de cada operación para evitar errores típicos (sujeción, localización, exenciones, inversión del sujeto pasivo, deducción). Incluye:",
-                            list: [ "Verificar si está sujeta o no y dónde se localiza la operación.", "Analizar la aplicación de exenciones y supuestos de inversión del sujeto pasivo.", "Revisar el derecho a deducción y su coherencia con la actividad.", "Auditoría de coherencia entre contrato – factura – flujo real de la operación." ],
-                            deliverables: [ "Nota técnica con el criterio aplicable por escrito (especialmente útil en operaciones internacionales o complejas).", "Recomendación documental mínima para sostener el criterio." ],
-                            regulations: "Ley IVA 37/1992 (y su desarrollo); marco UE y Directiva IVA 2006/112/CE."
-                        },
-                        { 
-                            title: "Fiscalidad de sociedades y pymes", icon: "Building", 
-                            desc: "Apoyo técnico en decisiones y operaciones habituales con impacto fiscal, con foco en coherencia documental y prevención de riesgos. Incluye:",
-                            list: [ "Revisión de deducibilidad de gastos y coherencia mercantil–contable–fiscal.", "Revisión de documentación de operaciones relevantes y riesgos recurrentes en pymes.", "Identificación de puntos sensibles en IVA y retenciones/obligaciones formales.", "Si hay actuación administrativa: preparación técnica de borradores de alegaciones en vía administrativa." ],
-                            deliverables: [ "Informe práctico de riesgos, criterios y recomendaciones.", "Matriz de “puntos de control” documentales para reducir exposición." ],
-                            regulations: "Ley IS 27/2014; Ley IVA 37/1992; Ley General Tributaria 58/2003 (marco de procedimientos y garantías)."
-                        },
-                        { 
-                            title: "Sucesiones y planificación patrimoniale", icon: "Scroll", 
-                            desc: "Análisis jurídico-fiscal para anticipar impacto tributario en herencias/donaciones y previsión de escenarios y documentación. Incluye:",
-                            list: [ "Estudio del escenario (herencia/donación) y su impacto fiscal previsible.", "Ordenación de documentación patrimoniale y detección de puntos críticos.", "Revisión tributaria de borradores documentales sin sustituir funciones notariales." ],
-                            deliverables: [ "Informe de escenarios y costes (con riesgos y documentación recomendada).", "Checklist de documentación y “decisiones sensibles” antes de formalizar." ],
-                            regulations: "Ley del Impuesto sobre Sucesiones y Donaciones 29/1987 (y normativa aplicable según el caso)"
-                        },
-                        { 
-                            title: "Reestructuraciones y contingencias", icon: "GitMerge", 
-                            desc: "Análisis de operaciones societarias y reorganizaciones empresariales desde su encaje fiscal, reforzando la defensa documental (especialmente ante inspección). Incluye:",
-                            list: [ "Verificación de requisitos y encaje en el Impuesto sobre Sociedades.", "Revisión de la motivación económica y coherencia del relato/documentación.", "Análisis de riesgos de regularización y preparación de documentación defensiva.", "Revisión de acuerdos sociales, contratos y soportes para que la “historia documental” sea consistente." ],
-                            deliverables: [ "Informe de viabilidad fiscal.", "Nota de contingencias y acciones de mitigación (documentales y de criterio)." ],
-                            regulations: "Ley IS 27/2014, en particular el régimen especial de reestructuraciones (fusiones, escisiones, aportaciones, canjes); Ley General Tributaria 58/2003 como marco de comprobación/inspección."
-                        },
-                        { 
-                            title: "Otros asuntos fiscales", icon: "MoreHorizontal", 
-                            desc: "Resolución de consultas tributarias específicas y asesoramiento a medida para situaciones fiscales atípicas o complejas." 
-                        }
-                    ],
-                    legalTitle: "Servicios de Asesoría Jurídica",
-                    legalAreas: [
-                        { area: "Derecho Civil", icon: "User", desc: "Gestión de relaciones privadas y protección del patrimonio. Ofrezco asesoramiento en contratación civil, derecho de familia con implicaciones patrimoniales y resolución de conflictos entre particulares.", items: [ "Análisis y revisión de contratos civiles.", "Asesoramiento en relaciones patrimoniales.", "Estudio de situaciones jurídicas personales con relevancia patrimonial.", "Revisión de documentación civil y privada.", "Informes jurídicos en materia civil." ] },
-                        { area: "Derecho Laboral", icon: "Briefcase", desc: "Asesoramiento preventivo y resolución de conflictos en el ámbito del trabajo. Analizo contratos, despidos y sanciones desde una perspectiva técnica para proteger los derechos laborales y la seguridad jurídica de la empresa.", items: [ "Análisis jurídico de relaciones laborales.", "Revisión de contratos de trabajo y pactos laborales.", "Asesoramiento preventivo en materia laboral.", "Análisis de despidos y sanciones disciplinarias.", "Estudio de viabilidad de reclamaciones laborales." ] },
-                        { area: "Derecho Administrativo", icon: "Landmark", desc: "Defensa de los intereses del ciudadano y la empresa frente a la Administración Pública. Me encargo de la revisión de actos administrativos, recursos y procedimientos sancionadores, garantizando el cumplimiento de la legalidad administrativa.", items: [ "Análisis y revisión de actos administrativos.", "Asesoramiento en procedimientos administrativos.", "Estudio de viabilidad de recursos administrativos.", "Preparación técnica de alegaciones y escritos administrativos.", "Acompañamiento jurídico frente a la Administración Pública.", "Análisis de sanciones y resoluciones administrativas." ] },
-                        { area: "Derecho Mercantil", icon: "Briefcase", desc: "Asesoramiento integral a empresas en todas las fases de su vida social. Desde la constitución y redacción de pactos de socios, hasta la revisión de contratos comerciales y cuestiones de gobierno corporativo para asegurar la estabilidad del negocio.", items: [ "Asesoramiento jurídico a pymes y sociedades mercantiles.", "Revisión y análisis de contratos mercantiles.", "Pactos entre socios y acuerdos societarios.", "Cuestiones de gobierno corporativo.", "Análisis jurídico previo a operaciones empresariales.", "Coordinación jurídica en la actividad ordinaria de la empresa." ] },
-                        { area: "Derecho Penal", icon: "Gavel", desc: "Análisis de riesgos penales en el entorno económico y empresarial (Compliance). Ofrezco soporte técnico en la elaboración de estrategias de defensa y coordinación con especialistas en litigación penal.", items: [ "Análisis jurídico de situaciones con posible relevancia penal.", "Revisión de denuncias, querellas y escritos penales.", "Estudio de riesgos penales en el ámbito empresarial.", "Apoyo técnico en la preparación de estrategias de defensa.", "Coordinación con abogados penalistas colegiados." ] },
-                        { area: "Derecho Digital y Nuevas Tecnologías", icon: "Cpu", desc: "Análisis jurídico de proyectos digitales, plataformas online y modelos de negocio basados en tecnología. Asesoramiento integral en cumplimiento normativo digital.", items: [ "Análisis jurídico de proyectos digitales, plataformas online y modelos de negocio basados en tecnología.", "Revisión y elaboración técnica de políticas de privacidad, avisos legales y condiciones de uso de páginas web y servicios digitales.", "Asesoramiento en materia de protección de datos personales (RGPD y normativa española), con enfoque preventivo y de cumplimiento.", "Análisis de flujos de datos, bases jurídicas del tratamiento y riesgos asociados al uso de información personal.", "Revisión jurídica de contratos tecnológicos (SaaS, licencias de software, prestación de servicios digitales, colaboración tecnológica).", "Asesoramiento en el uso de inteligencia artificial y nuevas tecnologías desde la perspectiva legal y de cumplimiento normativo.", "Elaboración de informes jurídicos y criterios técnicos para garantizar la seguridad jurídica en entornos digitales.", "Coordinación con profesionales especializados o abogados colegiados cuando el asunto requiera actuaciones reservadas." ] }
-                    ]
-                },
-                awards: {
-                    list: [
-                        {
-                            title: "XV Premio Jurídico Internacional ISDE 2025 – Categoría Estudiante",
-                            org: "Instituto Superior de Derecho y Economía (ISDE)",
-                            desc: "Reconocimiento otorgado al mejor Trabajo de Fin de Grado en la categoría Estudiante. El trabajo premiado, «Análisis de la exención del artículo 7 p) de la LIRPF por rendimientos de trabajo obtenidos en el extranjero», fue distinguido por su rigor técnico y su aportación al estudio de una de las exenciones más complejas del IRPF, de especial relevancia en materia de fiscalidad internacional y movilidad de trabajadores expatriados. La entrega del premio tuvo lugar en el Aula Magna de ISDE, en un acto que contó con la participación de destacados profesionales y académicos del ámbito jurídico.",
-                            links: [
-                                { text: "Confilegal", url: "https://confilegal.com/20251206-la-xv-edicion-del-premio-juridico-internacional-2025-de-isde-reivindica-la-moral-como-verdadera-inteligencia/" },
-                                { text: "AEDD", url: "https://aedd.org/noticias-derecho-deportivo/noticias-de-actualidad-derecho-deportivo/item/4038-xv-edicion-del-premio-juridico-internacional-isde-2025" },
-                                { text: "Lawyerpress", url: "https://www.lawyerpress.com/2025/12/09/isde-entrega-su-premio-juridico-internacional/" },
-                                { text: "Derecho UCM", url: "https://derecho.ucm.es/premio-juridico-isde-2025" },
-                                { text: "Discurso en YouTube", url: "https://www.youtube.com/watch?v=K8b7u4mSiKM&authuser=0" }
-                            ]
-                        },
-                        {
-                            title: "XIII Edición de los Premios de Emprendimiento Universitario UCM 2025 – Modalidad TFG",
-                            org: "Universidad Complutense de Madrid. Puntuación: 96.5/100",
-                            desc: "Reconocimiento concedido a mi Trabajo de Fin de Grado «Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-assisted Natural Language Processing Models», por su potencialidad como proyecto de emprendimiento en el sector jurídico. El proyecto aplica Modelos Largos de Lenguaje especializados en Procesamiento del Lenguaje Natural (GPT-4o) al análisis jurídico-tributario internacional, automatizando la detección de divergencias y cláusulas atípicas en convenios para evitar la doble imposición. La investigación demuestra la viabilidad de una solución LegalTech escalable, bajo un modelo SaaS, orientada a reducir significativamente los costes y tiempos del análisis fiscal y a facilitar la transferencia de conocimiento entre universidad y empresa.",
-                            links: [
-                                { text: "Resolución Definitiva", url: "https://www.ucm.es/compluemprende/file/xiii-peu-resolucion-definitiva-de-beneficiarios?ver" },
-                                { text: "Propuesta Provisional", url: "https://www.ucm.es/compluemprende/file/xiii-peu-propuesta-provisional-de-asignacion-de-beneficiarios-signed?ver" }
-                            ]
-                        }
-                    ]
-                },
-                publications: {
-                    list: [
-                        {
-                            title: "Evaluación de la inteligencia artificial como herramienta durante el Trabajo Fin de Grado de ámbito fiscal: ¿complemento o sustituto del estudiante?",
-                            meta: "Revista e-pública · septiembre de 2025",
-                            desc: "Artículo académico que analiza el uso de modelos de procesamiento del lenguaje natural en la elaboración de un Trabajo Fin de Grado en fiscalidad internacional. A través de una metodología basada en ingeniería de prompts y en la comparación sistemática entre convenios de doble imposición y el Modelo de Convenio de la OCDE, se evalúa la precisión, fiabilidad y relevancia del apoyo de la inteligencia artificial en la investigación jurídica. El estudio concluye que la IA constituye un instrumento de apoyo valioso, pero no un sustituto del criterio académico, al requerir supervisión crítica, validación de resultados y control metodológico para evitar errores o interpretaciones incorrectas.",
-                            links: [{ text: "Leer en e-pública", url: "https://e-publica.unizar.es/es/articulo/evaluacion-de-la-ia-como-herramienta-durante-el-trabajo-fin-de-grado-de-ambito-fiscal-complemento-o-sustituto-del-estudiante" }]
-                        },
-                        {
-                            title: "IVA en operaciones intragrupo: alcance del régimen de sujeto pasivo único según el TJUE (asunto C-184/23)",
-                            meta: "Expansión & LEX – Portal Jurídico Hispano-Alemán · febrero de 2025",
-                            desc: "Comentario jurisprudencial sobre la interpretación del Tribunal de Justicia de la Unión Europea en materia de IVA intragrupo, con especial atención al régimen de sujeto pasivo único y a sus implicaciones para entidades públicas, grupos empresariales y operadores con actividades parcialmente exentas. El análisis aborda los límites de la potestad de los Estados miembros para gravar operaciones internas una vez configurado el grupo a efectos del IVA.",
-                            links: [
-                                { text: "Leer en Expansión", url: "https://www.expansion.com/fiscal/impuestos-y-normativas/2025/03/11/67d0abade5fdea9d328b4586.html" },
-                                { text: "Leer en LEX", url: "https://lex.ahk.es/actualidad-juridica/iva-en-operaciones-intragrupo-ultimas-reflexiones-del-tjue" }
-                            ]
-                        },
-                        {
-                            title: "Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models",
-                            meta: "Trabajo Fin de Grado · UCM · enero de 2025 · Calificación: Matrícula de Honor",
-                            desc: "Trabajo de investigación centrado en el análisis comparado de los Convenios para evitar la Doble Imposición suscritos por España con distintos países económicamente relevantes, contrastándolos con el Modelo de Convenio de la OCDE (2017) con el objetivo de identificar cláusulas atípicas y patrones no convencionales derivados de negociaciones bilaterales específicas. El estudio se apoya en el uso de inteligencia artificial aplicada al procesamiento del lenguaje natural, mediante técnicas de prompt engineering y recuperación estructurada de información a través del modelo GPT-4o, evaluando su potencial para mejorar la eficiencia y sistematización del análisis jurídico-fiscal internacional en entornos profesionales y LegalTech.",
-                            links: [{ text: "Repositorio UCM", url: "https://hdl.handle.net/20.500.14352/118839" }]
-                        },
-                        {
-                            title: "Taller preparatorio del monográfico especial de e-pública sobre los usos docentes de las herramientas de inteligencia artificial",
-                            meta: "Congresos y participación académica",
-                            desc: "Participación en el taller preparatorio del número monográfico especial de la revista e-pública, dedicado a recopilar y debatir experiencias docentes relacionadas con el uso de la inteligencia artificial en el ámbito universitario, especialmente en materias vinculadas a la economía pública y al Sistema Fiscal Español. En este contexto, se presentaron trabajos orientados a analizar el impacto real de la IA en la docencia y en la formación jurídica.",
-                            links: [{ text: "Ver publicación", url: "https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1/details/publications" }]
-                        }
-                    ]
-                },
-                contact: {
-                    title: "Contacto Profesional",
-                    intro: "Este formulario tiene por objeto solicitar un primer contacto profesional en relación con los servicios de asesoramiento jurídico y fiscal descritos en esta web. La información facilitada permitirá valorar de forma preliminar la cuestión planteada y determinar, en su caso, los siguientes pasos.",
-                    response: "Responderé a la mayor brevedad posible.",
-                    fields: { name: "Nombre y apellidos *", email: "Correo electrónico *", phone: "Teléfono de contacto (Opcional, recomendado)", profile: "Perfil del solicitante *", scope: "Ámbito del asunto *", desc: "Breve descripción del asunto (5 a 8 líneas máximo) *", check: "He leído y acepto la Política de Privacidad", submit: "Solicitar contacto profesional" },
-                    profileOptions: [ "Persona física", "Persona jurídica (empresa / sociedad)", "Profesional o despacho", "Otro" ],
-                    scopeOptions: [ "Residencia fiscal y cambios de residencia", "Tributación de rentas del trabajo", "Fiscalidad internacional y convenios", "Tributación de no residentes", "Procedimientos tributarios", "Fiscalidad de autónomos y profesionales", "Fiscalidad inmobiliaria", "IVA y fiscalidad indirecta", "Fiscalidad de sociedades y pymes", "Sucesiones y planificación patrimonial", "Reestructuraciones y contingencias", "Derecho Administrativo", "Derecho Mercantil", "Derecho Civil", "Derecho Laboral", "Derecho Penal", "Derecho Digital y Nuevas Tecnologías", "Otro asunto" ],
-                    legal: "El envío de este formulario no implica la aceptación del encargo, ni la existencia de una relación abogado-cliente. La información facilitada será tratada con la finalidad de gestionar la solicitud de contacto y conforme a la normativa vigente en materia de protección de datos. No se prestan, a través de este formulario, servicios de defensa o representación legal reservados a la abogacía colegiada."
-                },
-                footer: { legal: "Aviso Legal y Privacidad", rights: "Todos los derechos reservados." }
+        // --- DATA DEFINITIONS ---
+        // Definimos primero el objeto ES para evitar errores de referencia circular
+        const esContent = {
+            nav: { home: "Inicio", profile: "Perfil", awards: "Premios", publications: "Publicaciones", tax: "Asesoramiento Fiscal", legal: "Asesoramiento Jurídico", contact: "Contacto" },
+            common: { keyPoints: "Puntos Clave", deliverables: "Entregables Típicos", regulations: "Normativa y criterios clave:", clickMore: "Click para más información", clickMoreLegal: "... click para ver todos los servicios" },
+            hero: {
+                role: "Jurista trilingüe (ES-EN-FR)",
+                subrole: "En vías de colegiación como abogado en la jurisdicción española. Estoy en proceso de especializarme en Derecho Financiero-Tributario y Derecho Procesal, contando con experiencia en planificación fiscal, tanto nacional como internacional, y litigación en los ámbitos Civil y Tributario, orientado a resolver problemas complejos con seguridad jurídica y eficacia.",
+                quote: "Iustitia omnibus, non privilegium paucis.",
+                targetTitle: "Asesoramiento fiscal a personas físicas y personas jurídicas, en particular:",
+                targets: [ "Pymes con actividad o proyección internacional", "Profesionales cualificados y directivos", "Autónomos y emprendedores", "Nómadas digitales y trabajadores desplazados", "Socios, administradores y fundadores de sociedades", "Inversores particulares con intereses transfronterizos", "Personas físicas con rentas, patrimonio o residencia fiscal en más de un país" ],
+                cta: "Solicitar Asesoramiento"
             },
+            profile: {
+                title: "Perfil Profesional", exp: "Experiencia Profesional", edu: "Formación Académica", lang: "Idiomas",
+                jobs: [
+                    { company: "Bufete Arroyo Romero", role: "Legal Trainee (6 meses)", desc: "Litigación civil y tributaria", tasks: [ "Investigación jurídica (legislación, jurisprudencia y doctrina).", "Elaboración de dictámenes e informes jurídicos.", "Análisis y diseño de estrategias procesales.", "Redacción de escritos procesales: demandas, contestaciones, denuncias, querellas y recursos." ] },
+                    { company: "Bové Montero y Asociados", role: "Junior Tax Advisor (2 años)", desc: "", tasks: [ "Elaboración de informes tributarios y resolución de consultas.", "Asistencia en inspecciones y procedimientos de comprobación de la Agencia Tributaria.", "Redacción y presentación de recursos y escritos ante la Administración.", "Participación en procesos de due diligence.", "Preparación y revisión de declaraciones fiscales (IS, IRNR, IVA, retenciones, entre otros).", "Asesoramiento fiscal a entidades jurídicas (Impuesto sobre Sociedades, IVA, IRNR, etc.).", "Asesoramiento fiscal a personas físicas (IRPF, Impuesto sobre el Patrimonio, Sucesiones y Donaciones, Modelo 720).", "Análisis de cuestiones relacionadas con fiscalidad internacional (IVA en operaciones intracomunitarias y extracomunitarias, análisis de establecimiento permanente, movilidad internacional, entre otros)." ] }
+                ],
+                education: [
+                    { institution: "Universidad Internacional de La Rioja (UNIR)", degree: "Máster de Acceso a la Abogacía y la Procura", details: ["En curso – en vías de colegiación.", "Nota: 9"] },
+                    { institution: "Universidad Complutense de Madrid", degree: "Doble Grado en Derecho y Administración y Dirección de Empresas (ADE)", details: [ "Programa bilingüe. Nota: 9,15", "Honours in the Bachelor's Thesis in Business Management (Top 1%): \"Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models\"", "Trabajo Fin de Grado de Derecho: \"ANÁLISIS DE LA EXENCIÓN DEL ARTÍCULO 7 P) LIRPF POR RENDIMIENTOS DE TRABAJO OBTENIDOS EN EL EXTRANJERO\". Calificación: 9,5", "Miembro del club de debate", "Estudiante del curso de francés B2.1 en el Centro Superior de Idiomas Modernos (UCM)", "Estudiante del curso de francés B2.2 en el Centro Superior de Idiomas Modernos (UCM)" ] },
+                    { institution: "Warsaw School of Economics", degree: "Programa Erasmus", details: ["Nota: 9,5"] },
+                    { institution: "St. Michael´s School", degree: "Bachillerato", details: ["Nota: 9,38"] }
+                ]
+            },
+            services: {
+                taxTitle: "Servicios de Asesoramiento Fiscal",
+                taxList: [
+                    { 
+                        title: "Residencia fiscal y cambios de residencia", icon: "MapPin", 
+                        desc: "Determinar la residencia fiscal es esencial porque define qué impuestos aplican y en qué medida. En España, la residencia fiscal de personas físicas se regula principalmente por la Ley del IRPF (art. 9), que fija criterios como:",
+                        list: [ "183 días o más de presencia en territorio español en un año natural.", "Que el centro principal de intereses económicos esté en España.", "Que el cónyuge e hijos dependientes residan habitualmente en España." ],
+                        endDesc: "La cuestión clave es aplicar estos criterios y desarrollar argumentos técnicos (p. ej., pruebas documentales, análisis de contratos, vida familiar, decisiones económicas) para que la Administración tributaria o un tribunal interpreten correctamente la situación. Esto es especialmente relevante en situaciones mixtas (teletrabajo internacional, desplazamientos frecuentes, expatriados)."
+                    },
+                    { 
+                        title: "Tributación de rentas del trabajo", icon: "Banknote", 
+                        desc: "Este servicio parte de la Ley del IRPF (arts. 17 y ss.) y de los principios de tributación mundial para residentes fiscales. En términos prácticos: Si una persona es residente fiscal en España, tributa por todas sus rentas mundiales, incluidas las del extranjero (salarios, pensiones, bonus, beneficios en especie). Si existe un Convenio para evitar la doble imposición, se aplican reglas específicas. El análisis incluye:",
+                        list: [ "La correcta calificación de cada tipo de ingreso.", "La aplicación de exenciones o deducciones internacionales (p. ej., pensiones públicas bajo ciertos tratados).", "Eliminación de doble imposición mediante créditos fiscales o exenciones según el CDI aplicable." ],
+                        endDesc: "El enfoque técnico es cuantificar el impacto fiscal y prever contingencias por errores de clasificación o por no aplicar el convenio que corresponde al país implicado."
+                    },
+                    { 
+                        title: "Fiscalidad internacional y convenios", icon: "Globe", 
+                        desc: "Los Convenios para evitar la doble imposición (CDI) son acuerdos bilaterales que establecen reglas claras para evitar que una misma renta sea gravada en dos países. Estos tratados definen:",
+                        list: [ "Residencia fiscal del contribuyente.", "Qué Estado tiene potestad sobre distintos tipos de rentas (trabajo, dividendos, intereses, pensiones, ganancias de capital).", "Métodos para evitar la doble imposición: exención o crédito fiscal." ],
+                        endDesc: "El análisis técnico incluye interpretar textos de convenio, identificar la fuente de cada renta y anticipar conflictos de normativa (p. ej., tratados con países con reglas especiales)."
+                    },
+                    { 
+                        title: "Tributación de no residentes", icon: "Plane", 
+                        desc: "Este servicio se basa en la Ley del Impuesto sobre la Renta de No Residentes (IRNR) y su reglamento. Puntos clave: El IRNR grava las rentas obtenidas en España por personas o entidades no residentes. Existen tasas específicas y obligaciones de presentación de declaraciones (Modelo 210). Si hay un CDI, puede limitar o modificar la tributación. Cuestiones frecuentes:",
+                        list: [ "Determinar si una renta deriva de fuente española.", "Ajustar la tributación a los criterios de territorialidad o de pago.", "Aplicar retenciones a pagadores españoles en pagos a no residentes (retenciones en la fuente)." ]
+                    },
+                    { 
+                        title: "Procedimientos tributarios", icon: "FileText", 
+                        desc: "Los procedimientos se rigen por la Ley General Tributaria (LGT) y su normativa de desarrollo. Este servicio consiste en:",
+                        list: [ "Interpretar requerimientos de información o justificación.", "Preparar alegaciones documentadas y alegar sobre cuestiones como prescripción, motivación de hechos y valoración de pruebas.", "Redactar recursos administrativos (recurso de reposición o recurso ante el TEAR) con argumentos sólidos basados en normativa y doctrina administrativa consolidada." ],
+                        endDesc: "El objetivo es diseñar una estrategia defensiva preventiva ante la administración, reduciendo riesgos de sanciones injustificadas."
+                    },
+                    { 
+                        title: "Fiscalidad de autónomos y profesionales", icon: "User", 
+                        desc: "La fiscalidad de actividades profesionales se basa en LIRPF (rendimientos de actividades económicas) y normativa de IVA. Incluye:",
+                        list: [ "Determinar si una actividad se considera económica según normativa.", "Establecer rígidamente qué gastos son deducibles y bajo qué criterios (área de afectación).", "Revisar cumplimiento de obligaciones formales (libros, facturas, retenciones)." ],
+                        endDesc: "Este servicio previene errores comunes que suelen desencadenar ajustes en comprobaciones."
+                    },
+                    { 
+                        title: "Fiscalidad inmobiliaria", icon: "Home", 
+                        desc: "Coordinación de la tributación directa e indirecta de operaciones inmobiliarias para fijar un tratamiento coherente con los hechos y minimizar contingencias. Incluye:",
+                        list: [ "Determinar el impacto en IRPF / Impuesto sobre Sociedades / IRNR, según el perfil del titular.", "Definir si la operación encaja en IVA o en ITP-AJD (y sus consecuencias).", "Valorar la incidencia de la normativa local, especialmente plusvalía municipal (IIVTNU) cuando proceda.", "Revisar contratos, arras, escrituras y documentación previa para alinear forma y realidad económica." ],
+                        deliverables: [ "Informe breve de escenarios, puntos críticos y documentación recomendada antes de comprar, vender o alquilar.", "Checklist de soporte documental “defendible” en caso de comprobación." ],
+                        regulations: "Ley IRPF 35/2006; Ley IS 27/2014; TRLIRNR (RDL 5/2004); Ley IVA 37/1992; TRITP-AJD (RDL 1/1993); TRLRHL (RDL 2/2004) y ajustes recientes del IIVTNU"
+                    },
+                    { 
+                        title: "IVA y fiscalidad indirecta", icon: "Percent", 
+                        desc: "Correcta calificación de cada operación para evitar errores típicos (sujeción, localización, exenciones, inversión del sujeto pasivo, deducción). Incluye:",
+                        list: [ "Verificar si está sujeta o no y dónde se localiza la operación.", "Analizar la aplicación de exenciones y supuestos de inversión del sujeto pasivo.", "Revisar el derecho a deducción y su coherencia con la actividad.", "Auditoría de coherencia entre contrato – factura – flujo real de la operación." ],
+                        deliverables: [ "Nota técnica con el criterio aplicable por escrito (especialmente útil en operaciones internacionales o complejas).", "Recomendación documental mínima para sostener el criterio." ],
+                        regulations: "Ley IVA 37/1992 (y su desarrollo); marco UE y Directiva IVA 2006/112/CE."
+                    },
+                    { 
+                        title: "Fiscalidad de sociedades y pymes", icon: "Building", 
+                        desc: "Apoyo técnico en decisiones y operaciones habituales con impacto fiscal, con foco en coherencia documental y prevención de riesgos. Incluye:",
+                        list: [ "Revisión de deducibilidad de gastos y coherencia mercantil–contable–fiscal.", "Revisión de documentación de operaciones relevantes y riesgos recurrentes en pymes.", "Identificación de puntos sensibles en IVA y retenciones/obligaciones formales.", "Si hay actuación administrativa: preparación técnica de borradores de alegaciones en vía administrativa." ],
+                        deliverables: [ "Informe práctico de riesgos, criterios y recomendaciones.", "Matriz de “puntos de control” documentales para reducir exposición." ],
+                        regulations: "Ley IS 27/2014; Ley IVA 37/1992; Ley General Tributaria 58/2003 (marco de procedimientos y garantías)."
+                    },
+                    { 
+                        title: "Sucesiones y planificación patrimoniale", icon: "Scroll", 
+                        desc: "Análisis jurídico-fiscal para anticipar impacto tributario en herencias/donaciones y previsión de escenarios y documentación. Incluye:",
+                        list: [ "Estudio del escenario (herencia/donación) y su impacto fiscal previsible.", "Ordenación de documentación patrimoniale y detección de puntos críticos.", "Revisión tributaria de borradores documentales sin sustituir funciones notariales." ],
+                        deliverables: [ "Informe de escenarios y costes (con riesgos y documentación recomendada).", "Checklist de documentación y “decisiones sensibles” antes de formalizar." ],
+                        regulations: "Ley del Impuesto sobre Sucesiones y Donaciones 29/1987 (y normativa aplicable según el caso)"
+                    },
+                    { 
+                        title: "Reestructuraciones y contingencias", icon: "GitMerge", 
+                        desc: "Análisis de operaciones societarias y reorganizaciones empresariales desde su encaje fiscal, reforzando la defensa documental (especialmente ante inspección). Incluye:",
+                        list: [ "Verificación de requisitos y encaje en el Impuesto sobre Sociedades.", "Revisión de la motivación económica y coherencia del relato/documentación.", "Análisis de riesgos de regularización y preparación de documentación defensiva.", "Revisión de acuerdos sociales, contratos y soportes para que la “historia documental” sea consistente." ],
+                        deliverables: [ "Informe de viabilidad fiscal.", "Nota de contingencias y acciones de mitigación (documentales y de criterio)." ],
+                        regulations: "Ley IS 27/2014, en particular el régimen especial de reestructuraciones (fusiones, escisiones, aportaciones, canjes); Ley General Tributaria 58/2003 como marco de comprobación/inspección."
+                    },
+                    { 
+                        title: "Otros asuntos fiscales", icon: "MoreHorizontal", 
+                        desc: "Resolución de consultas tributarias específicas y asesoramiento a medida para situaciones fiscales atípicas o complejas." 
+                    }
+                ],
+                legalTitle: "Servicios de Asesoría Jurídica",
+                legalAreas: [
+                    {
+                        area: "Derecho Civil", icon: "User",
+                        desc: "Gestión de relaciones privadas y protección del patrimonio. Ofrezco asesoramiento en contratación civil, derecho de familia con implicaciones patrimoniales y resolución de conflictos entre particulares.",
+                        items: [ "Análisis y revisión de contratos civiles.", "Asesoramiento en relaciones patrimoniales.", "Estudio de situaciones jurídicas personales con relevancia patrimonial.", "Revisión de documentación civil y privada.", "Informes jurídicos en materia civil." ]
+                    },
+                    {
+                        area: "Derecho Laboral", icon: "Briefcase",
+                        desc: "Asesoramiento preventivo y resolución de conflictos en el ámbito del trabajo. Analizo contratos, despidos y sanciones desde una perspectiva técnica para proteger los derechos laborales y la seguridad jurídica de la empresa.",
+                        items: [ "Análisis jurídico de relaciones laborales.", "Revisión de contratos de trabajo y pactos laborales.", "Asesoramiento preventivo en materia laboral.", "Análisis de despidos y sanciones disciplinarias.", "Estudio de viabilidad de reclamaciones laborales." ]
+                    },
+                    {
+                        area: "Derecho Administrativo", icon: "Landmark",
+                        desc: "Defensa de los intereses del ciudadano y la empresa frente a la Administración Pública. Me encargo de la revisión de actos administrativos, recursos y procedimientos sancionadores, garantizando el cumplimiento de la legalidad administrativa.",
+                        items: [ "Análisis y revisión de actos administrativos.", "Asesoramiento en procedimientos administrativos.", "Estudio de viabilidad de recursos administrativos.", "Preparación técnica de alegaciones y escritos administrativos.", "Acompañamiento jurídico frente a la Administración Pública.", "Análisis de sanciones y resoluciones administrativas." ]
+                    },
+                    {
+                        area: "Derecho Mercantil", icon: "Briefcase",
+                        desc: "Asesoramiento integral a empresas en todas las fases de su vida social. Desde la constitución y redacción de pactos de socios, hasta la revisión de contratos comerciales y cuestiones de gobierno corporativo para asegurar la estabilidad del negocio.",
+                        items: [ "Asesoramiento jurídico a pymes y sociedades mercantiles.", "Revisión y análisis de contratos mercantiles.", "Pactos entre socios y acuerdos societarios.", "Cuestiones de gobierno corporativo.", "Análisis jurídico previo a operaciones empresariales.", "Coordinación jurídica en la actividad ordinaria de la empresa." ]
+                    },
+                    {
+                        area: "Derecho Penal", icon: "Gavel",
+                        desc: "Análisis de riesgos penales en el entorno económico y empresarial (Compliance). Ofrezco soporte técnico en la elaboración de estrategias de defensa y coordinación con especialistas en litigación penal.",
+                        items: [ "Análisis jurídico de situaciones con posible relevancia penal.", "Revisión de denuncias, querellas y escritos penales.", "Estudio de riesgos penales en el ámbito empresarial.", "Apoyo técnico en la preparación de estrategias de defensa.", "Coordinación con abogados penalistas colegiados." ]
+                    },
+                    {
+                        area: "Derecho Digital y Nuevas Tecnologías", icon: "Cpu",
+                        desc: "Análisis jurídico de proyectos digitales, plataformas online y modelos de negocio basados en tecnología. Asesoramiento integral en cumplimiento normativo digital.",
+                        items: [ "Análisis jurídico de proyectos digitales, plataformas online y modelos de negocio basados en tecnología.", "Revisión y elaboración técnica de políticas de privacidad, avisos legales y condiciones de uso de páginas web y servicios digitales.", "Asesoramiento en materia de protección de datos personales (RGPD y normativa española), con enfoque preventivo y de cumplimiento.", "Análisis de flujos de datos, bases jurídicas del tratamiento y riesgos asociados al uso de información personal.", "Revisión jurídica de contratos tecnológicos (SaaS, licencias de software, prestación de servicios digitales, colaboración tecnológica).", "Asesoramiento en el uso de inteligencia artificial y nuevas tecnologías desde la perspectiva legal y de cumplimiento normativo.", "Elaboración de informes jurídicos y criterios técnicos para garantizar la seguridad jurídica en entornos digitales.", "Coordinación con profesionales especializados o abogados colegiados cuando el asunto requiera actuaciones reservadas." ]
+                    }
+                ]
+            },
+            awards: {
+                list: [
+                    {
+                        title: "XV Premio Jurídico Internacional ISDE 2025 – Categoría Estudiante",
+                        org: "Instituto Superior de Derecho y Economía (ISDE)",
+                        desc: "Reconocimiento otorgado al mejor Trabajo de Fin de Grado en la categoría Estudiante. El trabajo premiado, «Análisis de la exención del artículo 7 p) de la LIRPF por rendimientos de trabajo obtenidos en el extranjero», fue distinguido por su rigor técnico y su aportación al estudio de una de las exenciones más complejas del IRPF, de especial relevancia en materia de fiscalidad internacional y movilidad de trabajadores expatriados. La entrega del premio tuvo lugar en el Aula Magna de ISDE, en un acto que contó con la participación de destacados profesionales y académicos del ámbito jurídico.",
+                        images: ["premio-isde.solo.jpeg", "discurso-isde.jpg", "premio-isde-juntos.jpg"],
+                        links: [
+                            { text: "Confilegal", url: "https://confilegal.com/20251206-la-xv-edicion-del-premio-juridico-internacional-2025-de-isde-reivindica-la-moral-como-verdadera-inteligencia/" },
+                            { text: "AEDD", url: "https://aedd.org/noticias-derecho-deportivo/noticias-de-actualidad-derecho-deportivo/item/4038-xv-edicion-del-premio-juridico-internacional-isde-2025" },
+                            { text: "Lawyerpress", url: "https://www.lawyerpress.com/2025/12/09/isde-entrega-su-premio-juridico-internacional/" },
+                            { text: "Derecho UCM", url: "https://derecho.ucm.es/premio-juridico-isde-2025" },
+                            { text: "Discurso en YouTube", url: "https://www.youtube.com/watch?v=K8b7u4mSiKM&authuser=0" }
+                        ]
+                    },
+                    {
+                        title: "XIII Edición de los Premios de Emprendimiento Universitario UCM 2025 – Modalidad TFG",
+                        org: "Universidad Complutense de Madrid. Puntuación: 96.5/100",
+                        desc: "Reconocimiento concedido a mi Trabajo de Fin de Grado «Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-assisted Natural Language Processing Models», por su potencialidad como proyecto de emprendimiento en el sector jurídico. El proyecto aplica Modelos Largos de Lenguaje especializados en Procesamiento del Lenguaje Natural (GPT-4o) al análisis jurídico-tributario internacional, automatizando la detección de divergencias y cláusulas atípicas en convenios para evitar la doble imposición. La investigación demuestra la viabilidad de una solución LegalTech escalable, bajo un modelo SaaS, orientada a reducir significativamente los costes y tiempos del análisis fiscal y a facilitar la transferencia de conocimiento entre universidad y empresa.",
+                        links: [
+                            { text: "Resolución Definitiva", url: "https://www.ucm.es/compluemprende/file/xiii-peu-resolucion-definitiva-de-beneficiarios?ver" },
+                            { text: "Propuesta Provisional", url: "https://www.ucm.es/compluemprende/file/xiii-peu-propuesta-provisional-de-asignacion-de-beneficiarios-signed?ver" }
+                        ]
+                    }
+                ] 
+            },
+            publications: { 
+                list: [
+                    {
+                        title: "Evaluación de la inteligencia artificial como herramienta durante el Trabajo Fin de Grado de ámbito fiscal: ¿complemento o sustituto del estudiante?",
+                        meta: "Revista e-pública · septiembre de 2025",
+                        desc: "Artículo académico que analiza el uso de modelos de procesamiento del lenguaje natural en la elaboración de un Trabajo Fin de Grado en fiscalidad internacional. A través de una metodología basada en ingeniería de prompts y en la comparación sistemática entre convenios de doble imposición y el Modelo de Convenio de la OCDE, se evalúa la precisión, fiabilidad y relevancia del apoyo de la inteligencia artificial en la investigación jurídica. El estudio concluye que la IA constituye un instrumento de apoyo valioso, pero no un sustituto del criterio académico, al requerir supervisión crítica, validación de resultados y control metodológico para evitar errores o interpretaciones incorrectas.",
+                        links: [{ text: "Leer en e-pública", url: "https://e-publica.unizar.es/es/articulo/evaluacion-de-la-ia-como-herramienta-durante-el-trabajo-fin-de-grado-de-ambito-fiscal-complemento-o-sustituto-del-estudiante" }]
+                    },
+                    {
+                        title: "IVA en operaciones intragrupo: alcance del régimen de sujeto pasivo único según el TJUE (asunto C-184/23)",
+                        meta: "Expansión & LEX – Portal Jurídico Hispano-Alemán · febrero de 2025",
+                        desc: "Comentario jurisprudencial sobre la interpretación del Tribunal de Justicia de la Unión Europea en materia de IVA intragrupo, con especial atención al régimen de sujeto pasivo único y a sus implicaciones para entidades públicas, grupos empresariales y operadores con actividades parcialmente exentas. El análisis aborda los límites de la potestad de los Estados miembros para gravar operaciones internas una vez configurado el grupo a efectos del IVA.",
+                        links: [
+                            { text: "Leer en Expansión", url: "https://www.expansion.com/fiscal/impuestos-y-normativas/2025/03/11/67d0abade5fdea9d328b4586.html" },
+                            { text: "Leer en LEX", url: "https://lex.ahk.es/actualidad-juridica/iva-en-operaciones-intragrupo-ultimas-reflexiones-del-tjue" }
+                        ]
+                    },
+                    {
+                        title: "Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models",
+                        meta: "Trabajo Fin de Grado · UCM · enero de 2025 · Calificación: Matrícula de Honor",
+                        desc: "Trabajo de investigación centrado en el análisis comparado de los Convenios para evitar la Doble Imposición suscritos por España con distintos países económicamente relevantes, contrastándolos con el Modelo de Convenio de la OCDE (2017) con el objetivo de identificar cláusulas atípicas y patrones no convencionales derivados de negociaciones bilaterales específicas. El estudio se apoya en el uso de inteligencia artificial aplicada al procesamiento del lenguaje natural, mediante técnicas de prompt engineering y recuperación estructurada de información a través del modelo GPT-4o, evaluando su potencial para mejorar la eficiencia y sistematización del análisis jurídico-fiscal internacional en entornos profesionales y LegalTech.",
+                        links: [{ text: "Repositorio UCM", url: "https://hdl.handle.net/20.500.14352/118839" }]
+                    },
+                    {
+                        title: "Taller preparatorio del monográfico especial de e-pública sobre los usos docentes de las herramientas de inteligencia artificial",
+                        meta: "Congresos y participación académica",
+                        desc: "Participación en el taller preparatorio del número monográfico especial de la revista e-pública, dedicado a recopilar y debatir experiencias docentes relacionadas con el uso de la inteligencia artificial en el ámbito universitario, especialmente en materias vinculadas a la economía pública y al Sistema Fiscal Español. En este contexto, se presentaron trabajos orientados a analizar el impacto real de la IA en la docencia y en la formación jurídica.",
+                        image: "foto-icei.jpeg",
+                        links: [{ text: "Ver publicación", url: "https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1/details/publications" }]
+                    }
+                ] 
+            },
+            contact: {
+                title: "Contacto Profesional",
+                intro: "Este formulario tiene por objeto solicitar un primer contacto profesional en relación con los servicios de asesoramiento jurídico y fiscal descritos en esta web. La información facilitada permitirá valorar de forma preliminar la cuestión planteada y determinar, en su caso, los siguientes pasos.",
+                response: "Responderé a la mayor brevedad posible.",
+                fields: { name: "Nombre y apellidos *", email: "Correo electrónico *", phone: "Teléfono de contacto (Opcional, recomendado)", profile: "Perfil del solicitante *", scope: "Ámbito del asunto *", desc: "Breve descripción del asunto (5 a 8 líneas máximo) *", check: "He leído y acepto la Política de Privacidad", submit: "Solicitar contacto profesional" },
+                profileOptions: [ "Persona física", "Persona jurídica (empresa / sociedad)", "Profesional o despacho", "Otro" ],
+                scopeOptions: [ "Residencia fiscal y cambios de residencia", "Tributación de rentas del trabajo", "Fiscalidad internacional y convenios", "Tributación de no residentes", "Procedimientos tributarios", "Fiscalidad de autónomos y profesionales", "Fiscalidad inmobiliaria", "IVA y fiscalidad indirecta", "Fiscalidad de sociedades y pymes", "Sucesiones y planificación patrimonial", "Reestructuraciones y contingencias", "Derecho Administrativo", "Derecho Mercantil", "Derecho Civil", "Derecho Laboral", "Derecho Penal", "Derecho Digital y Nuevas Tecnologías", "Otro asunto" ],
+                legal: "El envío de este formulario no implica la aceptación del encargo, ni la existencia de una relación abogado-cliente. La información facilitada será tratada con la finalidad de gestionar la solicitud de contacto y conforme a la normativa vigente en materia de protección de datos. No se prestan, a través de este formulario, servicios de defensa o representación legal reservados a la abogacía colegiada."
+            },
+            footer: { legal: "Aviso Legal y Privacidad", rights: "Todos los derechos reservados." }
+        };
+
+        const translations = {
+            es: esContent,
             en: {
                 nav: { home: "Home", profile: "Profile", awards: "Awards", publications: "Publications", tax: "Tax Advisory", legal: "Legal Advisory", contact: "Contact" },
                 common: { keyPoints: "Key Points", deliverables: "Typical Deliverables", regulations: "Key Regulations and Criteria:", clickMore: "Click for more information", clickMoreLegal: "... click to see all services" },
@@ -280,16 +309,8 @@
                 },
                 profile: {
                     title: "Professional Profile", exp: "Professional Experience", edu: "Education", lang: "Languages",
-                    jobs: [
-                        { company: "Bufete Arroyo Romero", role: "Legal Trainee (6 months)", desc: "Civil and Tax Litigation", tasks: [ "Legal research (legislation, jurisprudence and doctrine).", "Preparation of legal opinions and reports.", "Analysis and design of procedural strategies.", "Drafting of procedural documents: lawsuits, answers, complaints, criminal complaints and appeals." ] },
-                        { company: "Bové Montero y Asociados", role: "Junior Tax Advisor (2 years)", desc: "", tasks: [ "Preparation of tax reports and resolution of queries.", "Assistance in inspections and verification procedures of the Tax Agency.", "Drafting and filing of appeals and writings before the Administration.", "Participation in due diligence processes.", "Preparation and review of tax returns (CIT, NRIT, VAT, withholdings, among others).", "Tax advice to legal entities (Corporate Income Tax, VAT, NRIT, etc.).", "Tax advice to individuals (PIT, Wealth Tax, Inheritance and Gift Tax, Form 720).", "Analysis of issues related to international taxation (VAT in intra-community and extra-community operations, permanent establishment analysis, international mobility, among others)." ] }
-                    ],
-                    education: [
-                        { institution: "Universidad Internacional de La Rioja (UNIR)", degree: "Master's Degree for Access to the Legal Profession", details: ["In progress – Bar admission pending.", "Grade: 9"] },
-                        { institution: "Universidad Complutense de Madrid", degree: "Double Degree in Law and Business Administration (ADE)", details: [ "Bilingual Program. Grade: 9.15", "Honours in the Bachelor's Thesis in Business Management (Top 1%): \"Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models\"", "Law Bachelor's Thesis: \"ANALYSIS OF THE EXEMPTION OF ARTICLE 7 P) LIRPF POR RENDIMIENTOS DE TRABAJO OBTENIDOS EN EL EXTRANJERO\". Grade: 9.5", "Debate Club Member", "French course B2.1 at Centro Superior de Idiomas Modernos (UCM)", "French course B2.2 at Centro Superior de Idiomas Modernos (UCM)" ] },
-                        { institution: "Warsaw School of Economics", degree: "Erasmus Program", details: ["Grade: 9.5"] },
-                        { institution: "St. Michael´s School", degree: "High School", details: ["Grade: 9.38"] }
-                    ]
+                    jobs: esContent.profile.jobs.map(j => ({ ...j, role: j.role.replace("meses", "months").replace("años", "years"), desc: j.desc === "Litigación civil y tributaria" ? "Civil and Tax Litigation" : "", tasks: j.tasks })),
+                    education: esContent.profile.education.map(e => ({...e, degree: e.degree === "Máster de Acceso a la Abogacía y la Procura" ? "Master's Degree for Access to the Legal Profession" : e.degree, details: e.details.map(d => d.replace("En curso", "In progress").replace("Nota", "Grade"))}))
                 },
                 services: {
                     taxTitle: "Tax Advisory Services",
@@ -373,18 +394,19 @@
                     legalAreas: [
                         { area: "Civil Law", icon: "User", desc: "Management of private relations and asset protection. I offer advice on civil contracting, family law with patrimonial implications and resolution of conflicts between individuals.", items: [ "Analysis and review of civil contracts.", "Advice on patrimonial relations.", "Study of personal legal situations with patrimonial relevance.", "Review of civil and private documentation.", "Legal reports on civil matters." ] },
                         { area: "Labor Law", icon: "Briefcase", desc: "Preventive advice and conflict resolution in the workplace. I analyze contracts, dismissals and sanctions from a technical perspective to protect labor rights.", items: [ "Legal analysis of labor relations.", "Review of employment contracts and labor agreements.", "Preventive advice on labor matters.", "Analysis of dismissals and disciplinary sanctions.", "Feasibility study of labor claims." ] },
-                        { area: "Administrative Law", icon: "Landmark", desc: "Defense of citizen and company interests before the Public Administration. I handle the review of administrative acts, appeals and sanctioning procedures, guaranteeing compliance with administrative legality.", items: [ "Analysis and review of administrative acts.", "Advice on administrative procedures.", "Feasibility study of administrative appeals.", "Technical preparation of allegations and administrative writings.", "Legal support before the Public Administration.", "Analysis of sanctions and administrative resolutions." ] },
+                        { area: "Administrative Law", icon: "Landmark", desc: "Defense of citizen and company interests before the Public Administration. I handle the review of administrative acts, appeals and sanctioning procedures.", items: [ "Analysis and review of administrative acts.", "Advice on administrative procedures.", "Feasibility study of administrative appeals.", "Technical preparation of allegations and administrative writings.", "Legal support before the Public Administration.", "Analysis of sanctions and administrative resolutions." ] },
                         { area: "Commercial/Corporate Law", icon: "Briefcase", desc: "Comprehensive advice to companies in all phases of their corporate life. From constitution and drafting of shareholder agreements to review of commercial contracts and corporate governance issues to ensure business stability.", items: [ "Legal advice to SMEs and commercial companies.", "Review and analysis of commercial contracts.", "Shareholders' agreements and corporate agreements.", "Corporate governance issues.", "Legal analysis prior to business operations.", "Legal coordination in the ordinary activity of the company." ] },
                         { area: "Criminal Law", icon: "Gavel", desc: "Analysis of criminal risks in the economic and business environment (Compliance). I offer technical support in the preparation of defense strategies and coordination with specialists in criminal litigation.", items: [ "Legal analysis of situations with possible criminal relevance.", "Review of complaints, lawsuits and criminal writings.", "Study of criminal risks in the business environment.", "Technical support in the preparation of defense strategies.", "Coordination with registered criminal lawyers." ] },
                         { area: "Digital Law & New Technologies", icon: "Cpu", desc: "Legal analysis of digital projects, online platforms, and technology-based business models. Comprehensive advice on digital regulatory compliance.", items: [ "Legal analysis of digital projects, online platforms, and technology-based business models.", "Review and technical drafting of privacy policies, legal notices, and terms of use for websites and digital services.", "Advice on personal data protection (GDPR and Spanish regulations), with a preventive and compliance approach.", "Analysis of data flows, legal bases for processing, and risks associated with the use of personal information.", "Legal review of technological contracts (SaaS, software licenses, digital service provision, technological collaboration).", "Advice on the use of artificial intelligence and new technologies from a legal and regulatory compliance perspective.", "Preparation of legal reports and technical criteria to ensure legal certainty in digital environments.", "Coordination with specialized professionals or registered lawyers when the matter requires reserved actions." ] }
                     ]
                 },
-                awards: { 
+                awards: {
                     list: [
                         {
                             title: "XV ISDE International Legal Prize 2025 – Student Category",
                             org: "Instituto Superior de Derecho y Economía (ISDE)",
                             desc: "Recognition granted to the best Bachelor's Thesis in the Student category. The awarded work, «Analysis of the exemption of article 7 p) of the LIRPF...», was distinguished for its technical rigor and its contribution to the study of one of the most complex exemptions of the IRPF, of special relevance in international taxation and expatriate worker mobility. The award ceremony took place at the ISDE Aula Magna in an event attended by prominent professionals and academics in the legal field.",
+                            images: ["premio-isde.solo.jpeg", "discurso-isde.jpg", "premio-isde-juntos.jpg"],
                             links: [
                                 { text: "Confilegal", url: "https://confilegal.com/20251206-la-xv-edicion-del-premio-juridico-internacional-2025-de-isde-reivindica-la-moral-como-verdadera-inteligencia/" },
                                 { text: "AEDD", url: "https://aedd.org/noticias-derecho-deportivo/noticias-de-actualidad-derecho-deportivo/item/4038-xv-edicion-del-premio-juridico-internacional-isde-2025" },
@@ -431,6 +453,7 @@
                             title: "Preparatory workshop for the e-pública special monograph on teaching uses of AI",
                             meta: "Conferences and academic participation",
                             desc: "Participation in the preparatory workshop for the special monograph issue of the e-pública journal, dedicated to compiling and debating teaching experiences related to the use of artificial intelligence in the university environment, especially in subjects linked to public economy and the Spanish Tax System. In this context, works aimed at analyzing the real impact of AI on teaching and legal training were presented.",
+                            image: "foto-icei.jpeg",
                             links: [{ text: "View publication", url: "https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1/details/publications" }]
                         }
                     ] 
@@ -550,7 +573,7 @@
                     ],
                     legalTitle: "Services de Conseil Juridique",
                     legalAreas: [
-                        { area: "Droit Civil", icon: "User", desc: "Gestion des relations privées et protection du patrimoine. Je offre des conseils en contrats civils, droit de la famille avec implications patrimoniales et résolution de conflits entre particuliers.", items: [ "Analyse et révision de contrats civils.", "Conseil en relations patrimoniales.", "Étude de situations juridiques personnelles à pertinence patrimoniale.", "Révision de documentation civile et privée.", "Rapports juridiques en matière civile." ] },
+                        { area: "Droit Civil", icon: "User", desc: "Gestion des relations privées et protection du patrimoine. J'offre des conseils en contrats civils, droit de la famille avec implications patrimoniales et résolution de conflits entre particuliers.", items: [ "Analyse et révision de contrats civils.", "Conseil en relations patrimoniales.", "Étude de situations juridiques personnelles à pertinence patrimoniale.", "Révision de documentation civile et privée.", "Rapports juridiques en matière civile." ] },
                         { area: "Droit du Travail", icon: "Briefcase", desc: "Conseil préventif et résolution de conflits au travail. J'analyse les contrats, les licenciements et les sanctions d'un point de vue technique pour protéger les droits du travail.", items: [ "Analyse juridique des relations de travail.", "Révision de contrats de travail et pactes de travail.", "Conseil préventif en matière de travail.", "Analyse de licenciements et sanctions disciplinaires.", "Étude de faisabilité de réclamations professionnelles." ] },
                         { area: "Droit Administratif", icon: "Landmark", desc: "Défense des intérêts du citoyen et de l'entreprise face à l'Administration Publique. Je me charge de la révision des actes administratifs, des recours et des procédures de sanction, garantissant le respect de la légalité administrative.", items: [ "Analyse et révision d'actes administratifs.", "Conseil en procédures administratives.", "Étude de faisabilité de recours administratifs.", "Préparation technique d'allégations et écrits administratifs.", "Accompagnement juridique face à l'Administration Publique.", "Analyse de sanctions et résolutions administratives." ] },
                         { area: "Droit Commercial", icon: "Briefcase", desc: "Conseil complet aux entreprises dans toutes les phases de leur vie sociale. De la constitution et la rédaction de pactes d'associés à la révision de contrats commerciaux et aux questions de gouvernance d'entreprise, pour assurer la stabilité de l'entreprise.", items: [ "Conseil juridique aux PME et sociétés commerciales.", "Révision et analyse de contrats commerciaux.", "Pactes d'associés et accords sociétaires.", "Questions de gouvernance d'entreprise.", "Analyse juridique préalable aux opérations d'entreprise.", "Coordination juridique dans l'activité ordinaire de l'entreprise." ] },
