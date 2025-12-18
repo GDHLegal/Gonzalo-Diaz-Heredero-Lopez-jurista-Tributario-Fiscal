@@ -3,689 +3,1425 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gonzalo Díaz-Heredero López | Jurista trilingüe (ES-EN-FR)</title>
+  <title>Gonzalo Díaz-Heredero López | GDHL</title>
 
-  <meta name="description" content="Jurista trilingüe (ES-EN-FR) en vías de colegiación. Derecho Financiero-Tributario y Derecho Procesal. Análisis, estrategia y redacción jurídica." />
-  <meta name="robots" content="index,follow" />
-  <meta property="og:title" content="Gonzalo Díaz-Heredero López | Jurista trilingüe" />
-  <meta property="og:description" content="Derecho Financiero-Tributario y Derecho Procesal. Análisis, estrategia y redacción jurídica." />
-  <meta property="og:type" content="website" />
-  <!-- Si quieres imagen de vista previa al compartir, súbela a /assets/og.jpg y descomenta -->
-  <!-- <meta property="og:image" content="./assets/og.jpg" /> -->
-
-  <!-- React & ReactDOM (UMD) -->
+  <!-- React & ReactDOM -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
   <!-- Babel -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Tailwind -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
 
   <style>
-    :root { color-scheme: light; }
-    body { font-family: "Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    h1,h2,h3 { font-family: "Playfair Display", Georgia, serif; }
+    body { font-family: 'Lato', sans-serif; background-color: #f8fafc; }
+    h1,h2,h3,h4,.serif { font-family: 'Playfair Display', serif; }
+    .fade-in { animation: fadeIn .35s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+    .legal-scroll::-webkit-scrollbar { width: 8px; }
+    .legal-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+    .legal-scroll::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+    .card-hover { transition: transform 200ms ease, box-shadow 200ms ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 18px -8px rgba(0,0,0,0.16); }
+    .img-shadow { box-shadow: 0 18px 30px rgba(0,0,0,0.12); }
   </style>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          boxShadow: { soft: "0 10px 30px rgba(0,0,0,0.08)" }
-        }
-      }
-    }
-  </script>
 </head>
 
-<body class="bg-zinc-50 text-zinc-900">
+<body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useEffect, useMemo, useState } = React;
+    const { useState, useEffect, useMemo } = React;
+
+    // =========================
+    // CONFIG
+    // =========================
     const FORMSPREE_ENDPOINT = "https://formspree.io/f/mrezzvqz";
-    const CONTENT = {
+
+    // =========================
+    // ICONS (inline SVG)
+    // =========================
+    const Icons = {
+      X: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      ),
+      Menu: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <line x1="4" x2="20" y1="12" y2="12"/>
+          <line x1="4" x2="20" y1="6" y2="6"/>
+          <line x1="4" x2="20" y1="18" y2="18"/>
+        </svg>
+      ),
+      Globe: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+          <path d="M2 12h20"/>
+        </svg>
+      ),
+      Mail: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="20" height="16" x="2" y="4" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      ),
+      Briefcase: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      ),
+      Award: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="12" cy="8" r="7"/>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+        </svg>
+      ),
+      BookOpen: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      ),
+      Scale: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+          <path d="M7 21h10"/>
+          <path d="M12 3v18"/>
+          <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+        </svg>
+      ),
+      MapPin: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      ),
+      Banknote: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="20" height="12" x="2" y="6" rx="2"/>
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M6 12h.01M18 12h.01"/>
+        </svg>
+      ),
+      Plane: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M10 21v-6l-7-3V9l7 3V3l4 2v7l7 3v3l-7-3v6z"/>
+        </svg>
+      ),
+      FileText: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      ),
+      User: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      ),
+      Home: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      ),
+      Percent: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <line x1="19" x2="5" y1="5" y2="19"/>
+          <circle cx="6.5" cy="6.5" r="2.5"/>
+          <circle cx="17.5" cy="17.5" r="2.5"/>
+        </svg>
+      ),
+      Building: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+          <path d="M9 22v-4h6v4"/>
+          <path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/>
+          <path d="M12 10h.01"/><path d="M12 14h.01"/>
+          <path d="M16 10h.01"/><path d="M16 14h.01"/>
+          <path d="M8 10h.01"/><path d="M8 14h.01"/>
+        </svg>
+      ),
+      Scroll: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M8 2h8a4 4 0 0 1 4 4v16l-6-2-6 2V6a4 4 0 0 1 4-4Z"/>
+          <path d="M8 2a4 4 0 0 0-4 4v16l6-2"/>
+        </svg>
+      ),
+      GitMerge: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="18" cy="18" r="3"/>
+          <circle cx="6" cy="6" r="3"/>
+          <path d="M6 21V9a9 9 0 0 0 9 9"/>
+        </svg>
+      ),
+      Share2: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/>
+          <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>
+        </svg>
+      ),
+      MoreHorizontal: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <circle cx="12" cy="12" r="1"/>
+          <circle cx="19" cy="12" r="1"/>
+          <circle cx="5" cy="12" r="1"/>
+        </svg>
+      ),
+      Landmark: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <line x1="3" x2="21" y1="22" y2="22"/>
+          <line x1="6" x2="6" y1="18" y2="11"/>
+          <line x1="10" x2="10" y1="18" y2="11"/>
+          <line x1="14" x2="14" y1="18" y2="11"/>
+          <line x1="18" x2="18" y1="18" y2="11"/>
+          <polygon points="12 2 20 7 4 7"/>
+        </svg>
+      ),
+      Gavel: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m14.5 12.5-8 8a2.121 2.121 0 0 1-3-3l8-8"/>
+          <path d="m16 16 6-6"/>
+          <path d="m8 8 6-6"/>
+          <path d="m9 7 8 8"/>
+          <path d="m21 11-8-8"/>
+        </svg>
+      ),
+      Cpu: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <rect width="16" height="16" x="4" y="4" rx="2"/>
+          <rect width="6" height="6" x="9" y="9" rx="1"/>
+          <path d="M15 2v2"/><path d="M15 20v2"/>
+          <path d="M2 15h2"/><path d="M2 9h2"/>
+          <path d="M20 15h2"/><path d="M20 9h2"/>
+          <path d="M9 2v2"/><path d="M9 20v2"/>
+        </svg>
+      ),
+      ChevronRight: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      ),
+      Check: (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+      ),
+    };
+
+    // =========================
+    // IMAGES (GitHub Pages: rutas case-sensitive)
+    // =========================
+    const IMG = {
+      profile: "./assets/img/gonzalo-diaz-heredero-lopez.JPG",
+      premioJuntos: "./assets/img/premio-isde-juntos.jpeg",
+      premioSolo: "./assets/img/premio-isde.solo.jpeg",
+      discurso: "./assets/img/discurso-isde.jpeg",
+      icei: "./assets/img/foto-icei.jpeg",
+    };
+
+    // =========================
+    // TRANSLATIONS (EN/FR con fallback automático a ES)
+    // =========================
+    const translations = {
       es: {
-        langLabel: "ES",
-        topTag: "Jurista trilingüe (ES-EN-FR) · en vías de colegiación",
-        headline: "Gonzalo Díaz-Heredero López",
-        subheadline:
-          "En proceso de especializarme en Derecho Financiero-Tributario y Derecho Procesal. Experiencia en planificación fiscal (nacional e internacional) y litigación civil y tributaria. Enfoque: resolver problemas complejos con seguridad jurídica y eficacia.",
-        ctas: { primary: "Contactar", secondary: "Servicios" },
-        notice:
-          "Nota profesional: hasta mi colegiación, no ofrezco defensa ni representación procesal reservada a la abogacía. Puedo prestar análisis, redacción, preparación de documentación y coordinación con abogado colegiado cuando proceda.",
-        sections: {
-          services: "Servicios",
-          profile: "Perfil profesional",
-          languages: "Idiomas",
-          contact: "Contacto"
+        meta: { title: "Gonzalo Díaz-Heredero López | GDHL" },
+        nav: { home:"Inicio", profile:"Perfil", awards:"Premios", publications:"Publicaciones", tax:"Asesoramiento Fiscal", legal:"Asesoramiento Jurídico", contact:"Contacto", tagline:"Legal & Tax" },
+        ui: { clickMore:"Click para más información", clickSeeAll:"... click para ver todos los servicios", email:"Email", linkedin:"LinkedIn" },
+        serviceModal: { keyPoints:"Puntos clave", cta:"Solicitar contacto profesional" },
+
+        hero: {
+          role: "Jurista trilingüe (ES-EN-FR)",
+          subrole: "En vías de colegiación como abogado en la jurisdicción española. Estoy en proceso de especializarme en Derecho Financiero-Tributario y Derecho Procesal, con experiencia en planificación fiscal, tanto nacional como internacional, y litigación en los ámbitos Civil y Tributario, orientado a resolver problemas complejos con seguridad jurídica y eficacia.",
+          quote: "Iustitia omnibus, non privilegium paucis.",
+          targetTitle: "Asesoramiento fiscal a personas físicas y personas jurídicas, en particular:",
+          targets: [
+            "Pymes con actividad o proyección internacional",
+            "Profesionales cualificados y directivos",
+            "Autónomos y emprendedores",
+            "Nómadas digitales y trabajadores desplazados",
+            "Socios, administradores y fundadores de sociedades",
+            "Inversores particulares con intereses transfronterizos",
+            "Personas físicas con rentas, patrimonio o residencia fiscal en más de un país",
+            "Otras personas físicas o jurídicas que requieran asesoramiento legal"
+          ],
+          noteTitle: "Nota profesional",
+          note: "Hasta mi colegiación, no presto servicios de defensa/representación procesal reservados a la abogacía colegiada. Sí puedo realizar análisis, revisión documental, preparación técnica de escritos y coordinación con profesionales colegiados cuando resulte necesario.",
+          cta: "Solicitar contacto profesional"
         },
-        serviceCards: [
-          {
-            title: "Fiscalidad inmobiliaria",
-            bullets: [
-              "Análisis integral de operaciones (IRPF/IS/IRNR, IVA vs ITP-AJD, plusvalía municipal cuando proceda).",
-              "Revisión de contratos/escrituras y coherencia hechos-documentos.",
-              "Informe de escenarios, riesgos y puntos críticos antes de comprar, vender o alquilar."
-            ]
-          },
-          {
-            title: "IVA y fiscalidad indirecta",
-            bullets: [
-              "Calificación correcta: sujeción/no sujeción, localización, exenciones y regímenes especiales.",
-              "Inversión del sujeto pasivo, facturación y derecho a deducción.",
-              "Criterio documentado y revisión de consistencia contrato-factura-realidad económica."
-            ]
-          },
-          {
-            title: "Fiscalidad internacional",
-            bullets: [
-              "Residencia fiscal, conflictos de doble residencia y convenios para evitar la doble imposición (CDI).",
-              "Rentas transfronterizas (trabajo, dividendos, intereses, inmuebles) y retenciones.",
-              "Mapeo de riesgos y plan de cumplimiento, con enfoque práctico."
-            ]
-          },
-          {
-            title: "Derecho civil y mercantil",
-            bullets: [
-              "Revisión y redacción de contratos (arrendamientos, compraventa, prestación de servicios, pactos).",
-              "Prevención de litigios: cláusulas, garantías y estructura documental.",
-              "Análisis de estrategia y escenarios ante incumplimientos."
-            ]
-          },
-          {
-            title: "Derecho laboral",
-            bullets: [
-              "Revisión de contratos de trabajo y documentación laboral básica.",
-              "Análisis de riesgos en medidas disciplinarias y extinción contractual.",
-              "Preparación de documentación y apoyo en estrategia (con coordinación letrada si procede)."
-            ]
-          },
-          {
-            title: "Derecho penal",
-            bullets: [
-              "Análisis preliminar del caso, cronología y ordenación documental.",
-              "Preparación de escritos de hechos y recopilación de prueba para coordinación con defensa.",
-              "Acompañamiento estratégico en fase pre-procesal (sin representación reservada)."
-            ]
-          }
-        ],
-        profileItems: [
-          {
-            org: "Bufete Arroyo Romero",
-            role: "Legal Trainee (6 meses) · Litigación civil y tributaria",
-            bullets: [
-              "Investigación jurídica (legislación, jurisprudencia y doctrina).",
-              "Elaboración de dictámenes e informes jurídicos.",
-              "Análisis y diseño de estrategias procesales."
-            ]
-          }
-        ],
-        languagesList: [
-          { k: "Español", v: "Nativo" },
-          { k: "English", v: "C2" },
-          { k: "Français", v: "B2" }
-        ],
-        contactIntro:
-          "Cuéntame tu caso de forma breve. Si encaja, te propongo el siguiente paso y el alcance del trabajo.",
-        form: {
-          name: "Nombre",
-          email: "Email",
-          service: "Área de interés",
-          serviceOptions: ["General", "Fiscalidad inmobiliaria", "IVA", "Fiscalidad internacional", "Civil/Mercantil", "Laboral", "Penal"],
-          message: "Mensaje",
-          submit: "Enviar",
-          sending: "Enviando…",
-          sentOk: "Mensaje enviado. Gracias. Responderé en cuanto pueda.",
-          sentErr: "No se ha podido enviar. Revisa el formulario o inténtalo de nuevo."
+
+        profile: {
+          title: "Perfil Profesional",
+          photoLabel: "Fotografía",
+          exp: "Experiencia Profesional",
+          edu: "Formación Académica",
+          lang: "Idiomas",
+          motto: "Proactividad y ganas de aprender",
+          jobs: [
+            {
+              company: "Bufete Arroyo Romero",
+              role: "Legal Trainee (6 meses)",
+              desc: "Litigación civil y tributaria",
+              tasks: [
+                "Investigación jurídica (legislación, jurisprudencia y doctrina).",
+                "Elaboración de dictámenes e informes jurídicos.",
+                "Análisis y diseño de estrategias procesales.",
+                "Redacción de escritos procesales: demandas, contestaciones, denuncias, querellas y recursos."
+              ]
+            },
+            {
+              company: "Bové Montero y Asociados",
+              role: "Junior Tax Advisor (2 años)",
+              desc: "",
+              tasks: [
+                "Elaboración de informes tributarios y resolución de consultas.",
+                "Asistencia en inspecciones y procedimientos de comprobación de la Agencia Tributaria.",
+                "Redacción y presentación de recursos y escritos ante la Administración.",
+                "Participación en procesos de due diligence.",
+                "Preparación y revisión de declaraciones fiscales (IS, IRNR, IVA, retenciones, entre otros).",
+                "Asesoramiento fiscal a entidades jurídicas (Impuesto sobre Sociedades, IVA, IRNR, etc.).",
+                "Asesoramiento fiscal a personas físicas (IRPF, Impuesto sobre el Patrimonio, Sucesiones y Donaciones, Modelo 720).",
+                "Análisis de cuestiones relacionadas con fiscalidad internacional (IVA en operaciones intracomunitarias y extracomunitarias, análisis de establecimiento permanente, movilidad internacional, entre otros)."
+              ]
+            }
+          ],
+          education: [
+            {
+              institution: "Universidad Internacional de La Rioja (UNIR)",
+              degree: "Máster de Acceso a la Abogacía y la Procura",
+              details: ["En curso – en vías de colegiación.", "Nota: 9"]
+            },
+            {
+              institution: "Universidad Complutense de Madrid",
+              degree: "Doble Grado en Derecho y Administración y Dirección de Empresas (ADE)",
+              details: [
+                "Programa bilingüe. Nota: 9,15",
+                "Honours in the Bachelor's Thesis in Business Management (Top 1%): «Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted Natural Language Processing Models»",
+                "Trabajo Fin de Grado de Derecho: «Análisis de la exención del artículo 7 p) LIRPF por rendimientos de trabajo obtenidos en el extranjero». Calificación: 9,5",
+                "Miembro del club de debate",
+                "Estudiante del curso de francés B2.1 (CSIM-UCM)",
+                "Estudiante del curso de francés B2.2 (CSIM-UCM)"
+              ]
+            },
+            { institution: "Warsaw School of Economics", degree: "Programa Erasmus", details: ["Nota: 9,5"] },
+            { institution: "St. Michael’s School", degree: "Etapa preuniversitaria", details: ["Nota: 9,38"] }
+          ]
         },
-        footer: "© " + new Date().getFullYear() + " Gonzalo Díaz-Heredero López · Sitio informativo"
+
+        languages: {
+          list: [
+            { name: "Español", level: "Nativo" },
+            { name: "Inglés", level: "C2 Proficiency (CPE)" },
+            { name: "Francés", level: "DELF B2" },
+            { name: "Chino", level: "Básico" }
+          ]
+        },
+
+        services: {
+          taxTitle: "Servicios de Asesoramiento Fiscal",
+          taxList: [
+            {
+              title: "Residencia fiscal y cambios de residencia",
+              icon: "MapPin",
+              desc:
+                "Determinar la residencia fiscal es esencial porque define qué impuestos aplican y en qué medida. En España, la residencia fiscal de personas físicas se regula principalmente por la Ley del IRPF (art. 9), que fija criterios como:",
+              list: [
+                "183 días o más de presencia en territorio español en un año natural.",
+                "Que el centro principal de intereses económicos esté en España.",
+                "Que el cónyuge e hijos dependientes residan habitualmente en España."
+              ],
+              endDesc:
+                "La cuestión clave es aplicar estos criterios y desarrollar argumentos técnicos (p. ej., pruebas documentales, análisis de contratos, vida familiar, decisiones económicas) para que la Administración tributaria o un tribunal interpreten correctamente la situación. Especialmente relevante en situaciones mixtas (teletrabajo internacional, desplazamientos frecuentes, expatriados)."
+            },
+            {
+              title: "Tributación de rentas del trabajo (España y/o extranjero)",
+              icon: "Banknote",
+              desc:
+                "Servicio basado en la Ley del IRPF (arts. 17 y ss.) y los principios de tributación mundial para residentes fiscales. En términos prácticos:",
+              list: [
+                "Si una persona es residente fiscal en España, tributa por todas sus rentas mundiales (salarios, pensiones, bonus, beneficios en especie).",
+                "Si existe un Convenio para evitar la doble imposición, se aplican reglas específicas para evitar gravar dos veces la misma renta.",
+                "Análisis de calificación del ingreso, exenciones/deducciones internacionales y métodos de eliminación de doble imposición (crédito/exención)."
+              ],
+              endDesc:
+                "El enfoque técnico es cuantificar el impacto fiscal y prever contingencias por errores de clasificación o por no aplicar el CDI correspondiente."
+            },
+            {
+              title: "Fiscalidad internacional y convenios de doble imposición",
+              icon: "Globe",
+              desc:
+                "Los Convenios para evitar la doble imposición (CDI) establecen reglas claras para evitar que una misma renta sea gravada en dos países.",
+              list: [
+                "Determinación de residencia fiscal.",
+                "Asignación de potestad tributaria por tipo de renta (trabajo, dividendos, intereses, pensiones, ganancias patrimoniales).",
+                "Métodos para evitar doble imposición: exención o crédito fiscal.",
+                "Interpretación del tratado aplicable, identificación de la fuente y anticipación de conflictos normativos."
+              ]
+            },
+            {
+              title: "Tributación de no residentes en España",
+              icon: "Plane",
+              desc:
+                "Servicio basado en la Ley del IRNR y su reglamento. El IRNR grava las rentas obtenidas en España por personas o entidades no residentes (principalmente Modelo 210).",
+              list: [
+                "Determinación de renta de fuente española.",
+                "Aplicación de CDI (tipos reducidos y límites).",
+                "Gestión de obligaciones formales y retenciones en origen."
+              ]
+            },
+            {
+              title: "Procedimientos tributarios (requerimientos, inspecciones, recursos)",
+              icon: "FileText",
+              desc:
+                "Procedimientos regidos por la Ley General Tributaria (LGT) y normativa de desarrollo.",
+              list: [
+                "Interpretación de requerimientos de información o justificación.",
+                "Preparación de alegaciones documentadas (prescripción, motivación, prueba).",
+                "Redacción de recursos administrativos (reposición y/o TEAR) con argumentación sólida."
+              ],
+              endDesc:
+                "Objetivo: estrategia defensiva preventiva, reducción de riesgos y control de contingencias sancionadoras."
+            },
+            {
+              title: "Fiscalidad de autónomos y profesionales",
+              icon: "User",
+              desc:
+                "Fiscalidad de actividades profesionales: IRPF (rendimientos de actividades económicas), IVA (reglas de localización) y obligaciones formales.",
+              list: [
+                "Determinación de actividad económica y obligaciones.",
+                "Gastos deducibles y criterios de afectación.",
+                "Revisión de cumplimiento formal (libros, facturas, retenciones)."
+              ],
+              endDesc:
+                "Servicio orientado a prevenir errores comunes que suelen desencadenar ajustes en comprobaciones."
+            },
+            {
+              title: "Fiscalidad inmobiliaria",
+              icon: "Home",
+              desc:
+                "Coordinación de tributación directa e indirecta para fijar un tratamiento coherente con los hechos y minimizar contingencias.",
+              list: [
+                "Impacto en IRPF / Impuesto sobre Sociedades / IRNR según el perfil del titular.",
+                "Encaje en IVA o ITP-AJD (y consecuencias).",
+                "Incidencia de normativa local (plusvalía municipal / IIVTNU).",
+                "Revisión de contratos, arras, escrituras y documentación previa para alinear forma y realidad económica."
+              ],
+              endDesc:
+                "Entregables típicos: informe de escenarios y puntos críticos + checklist documental defendible."
+            },
+            {
+              title: "IVA y fiscalidad indirecta",
+              icon: "Percent",
+              desc:
+                "Calificación correcta de cada operación: sujeción, localización, exenciones, inversión del sujeto pasivo y derecho a deducción.",
+              list: [
+                "Verificar sujeción/no sujeción y lugar de realización.",
+                "Analizar exenciones e inversión del sujeto pasivo.",
+                "Revisar derecho a deducción y coherencia con la actividad.",
+                "Auditoría de coherencia contrato – factura – realidad económica."
+              ],
+              endDesc:
+                "Entregables típicos: nota técnica con criterio por escrito y recomendación documental mínima."
+            },
+            {
+              title: "Fiscalidad de sociedades y pymes",
+              icon: "Building",
+              desc:
+                "Apoyo técnico en decisiones y operaciones con impacto fiscal, con foco en coherencia documental y prevención de riesgos.",
+              list: [
+                "Revisión de deducibilidad de gastos y coherencia mercantil–contable–fiscal.",
+                "Documentación de operaciones relevantes y riesgos recurrentes.",
+                "Puntos sensibles en IVA y retenciones/obligaciones formales.",
+                "En caso de actuación administrativa: borradores técnicos de alegaciones."
+              ],
+              endDesc:
+                "Entregables típicos: informe práctico de riesgos/criterios + matriz de puntos de control documentales."
+            },
+            {
+              title: "Sucesiones y planificación patrimonial",
+              icon: "Scroll",
+              desc:
+                "Análisis jurídico-fiscal para anticipar impacto tributario en herencias/donaciones y previsión de escenarios y documentación.",
+              list: [
+                "Estudio del escenario y costes previsible.",
+                "Ordenación documental y detección de puntos críticos.",
+                "Revisión tributaria de borradores documentales sin sustituir funciones notariales."
+              ]
+            },
+            {
+              title: "Reestructuraciones y contingencias fiscales",
+              icon: "GitMerge",
+              desc:
+                "Análisis de operaciones societarias y reorganizaciones desde su encaje fiscal, reforzando la defensa documental.",
+              list: [
+                "Verificación de requisitos y encaje en Impuesto sobre Sociedades.",
+                "Motivación económica y coherencia del relato/documentación.",
+                "Riesgos de regularización y acciones de mitigación."
+              ],
+              endDesc:
+                "Entregables típicos: informe de viabilidad fiscal + nota de contingencias."
+            },
+            {
+              title: "Coordinación fiscal con otros países o asesores externos",
+              icon: "Share2",
+              desc:
+                "Coordinación con asesores de otras jurisdicciones para una estrategia consistente, cumplimiento simultáneo y alineación documental.",
+            },
+            {
+              title: "Otros asuntos fiscales",
+              icon: "MoreHorizontal",
+              desc:
+                "Asesoramiento a medida para supuestos atípicos o complejos: consultas tributarias específicas y análisis de riesgo.",
+            }
+          ],
+
+          legalTitle: "Servicios de Asesoría Jurídica",
+          legalAreas: [
+            { area:"Derecho Civil", icon:"User", desc:"Análisis y revisión contractual e informes.", items:[
+              "Análisis y revisión de contratos civiles.",
+              "Asesoramiento en relaciones patrimoniales.",
+              "Estudio de situaciones jurídicas personales con relevancia patrimonial.",
+              "Revisión de documentación civil y privada.",
+              "Informes jurídicos en materia civil."
+            ]},
+            { area:"Derecho Laboral", icon:"Briefcase", desc:"Relaciones laborales, contratos, despidos y sanciones.", items:[
+              "Análisis jurídico de relaciones laborales.",
+              "Revisión de contratos de trabajo y pactos laborales.",
+              "Asesoramiento preventivo en materia laboral.",
+              "Análisis de despidos y sanciones disciplinarias.",
+              "Estudio de viabilidad de reclamaciones laborales."
+            ]},
+            { area:"Derecho Administrativo", icon:"Landmark", desc:"Actos administrativos, procedimientos y recursos.", items:[
+              "Análisis y revisión de actos administrativos.",
+              "Asesoramiento en procedimientos administrativos.",
+              "Estudio de viabilidad de recursos administrativos.",
+              "Preparación técnica de alegaciones y escritos administrativos.",
+              "Acompañamiento jurídico frente a la Administración Pública.",
+              "Análisis de sanciones y resoluciones administrativas."
+            ]},
+            { area:"Derecho Mercantil", icon:"Briefcase", desc:"Pymes y sociedades: contratos, pactos y gobierno corporativo.", items:[
+              "Asesoramiento jurídico a pymes y sociedades mercantiles.",
+              "Revisión y análisis de contratos mercantiles.",
+              "Pactos entre socios y acuerdos societarios.",
+              "Cuestiones de gobierno corporativo.",
+              "Análisis jurídico previo a operaciones empresariales.",
+              "Coordinación jurídica en la actividad ordinaria de la empresa."
+            ]},
+            { area:"Derecho Penal", icon:"Gavel", desc:"Riesgo penal y apoyo técnico con coordinación colegiada.", items:[
+              "Análisis jurídico de situaciones con posible relevancia penal.",
+              "Revisión de denuncias, querellas y escritos penales.",
+              "Estudio de riesgos penales en el ámbito empresarial.",
+              "Apoyo técnico en la preparación de estrategias de defensa.",
+              "Coordinación con abogados penalistas colegiados."
+            ]},
+            { area:"Derecho Digital y Nuevas Tecnologías", icon:"Cpu", desc:"Proyectos digitales, RGPD, contratos tech e IA.", items:[
+              "Análisis jurídico de proyectos digitales, plataformas online y modelos de negocio tecnológicos.",
+              "Revisión y elaboración técnica de políticas de privacidad, avisos legales y condiciones de uso.",
+              "Asesoramiento en protección de datos (RGPD y normativa española), con enfoque preventivo y de cumplimiento.",
+              "Análisis de flujos de datos, bases jurídicas del tratamiento y riesgos asociados.",
+              "Revisión jurídica de contratos tecnológicos (SaaS, licencias, servicios digitales).",
+              "Asesoramiento en IA y nuevas tecnologías desde la perspectiva legal y de cumplimiento.",
+              "Elaboración de informes jurídicos y criterios técnicos para entornos digitales.",
+              "Coordinación con profesionales especializados o abogados colegiados cuando proceda."
+            ]}
+          ]
+        },
+
+        awards: {
+          title: "Premios y distinciones",
+          list: [
+            {
+              title: "XV Premio Jurídico Internacional ISDE 2025 – Categoría Estudiante",
+              org: "Instituto Superior de Derecho y Economía (ISDE)",
+              desc:
+                "Reconocimiento otorgado al mejor Trabajo de Fin de Grado en la categoría Estudiante. El trabajo premiado, «Análisis de la exención del artículo 7 p) de la LIRPF por rendimientos de trabajo obtenidos en el extranjero», fue distinguido por su rigor técnico y su aportación al estudio de una de las exenciones más complejas del IRPF, de especial relevancia en materia de fiscalidad internacional y movilidad de trabajadores expatriados. La entrega del premio tuvo lugar en el Aula Magna de ISDE.",
+              links: [
+                { text: "Confilegal", url: "https://confilegal.com/20251206-la-xv-edicion-del-premio-juridico-internacional-2025-de-isde-reivindica-la-moral-como-verdadera-inteligencia/" },
+                { text: "AEDD", url: "https://aedd.org/noticias-derecho-deportivo/noticias-de-actualidad-derecho-deportivo/item/4038-xv-edicion-del-premio-juridico-internacional-isde-2025" },
+                { text: "Lawyerpress", url: "https://www.lawyerpress.com/2025/12/09/isde-entrega-su-premio-juridico-internacional/" },
+                { text: "Derecho UCM", url: "https://derecho.ucm.es/premio-juridico-isde-2025" },
+                { text: "Discurso (YouTube)", url: "https://www.youtube.com/watch?v=K8b7u4mSiKM&authuser=0" }
+              ],
+              photos: [
+                { src: IMG.premioJuntos, alt:"Premio ISDE (foto juntos)" },
+                { src: IMG.premioSolo, alt:"Premio ISDE (foto solo)" },
+                { src: IMG.discurso, alt:"Discurso ISDE" }
+              ]
+            },
+            {
+              title: "XIII Premios de Emprendimiento Universitario UCM 2025 – Modalidad TFG",
+              org: "Universidad Complutense de Madrid · 96,5/100",
+              desc:
+                "Reconocimiento concedido al TFG «Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-assisted Natural Language Processing Models», por su potencialidad como proyecto de emprendimiento en el sector jurídico (LegalTech, SaaS).",
+              links: [
+                { text: "Resolución definitiva (UCM)", url: "https://www.ucm.es/compluemprende/file/xiii-peu-resolucion-definitiva-de-beneficiarios?ver" },
+                { text: "Propuesta provisional (UCM)", url: "https://www.ucm.es/compluemprende/file/xiii-peu-propuesta-provisional-de-asignacion-de-beneficiarios-signed?ver" }
+              ],
+              photos: []
+            }
+          ]
+        },
+
+        publications: {
+          title: "Artículos, publicaciones y congresos",
+          list: [
+            {
+              title: "Evaluación de la inteligencia artificial como herramienta durante el TFG de ámbito fiscal: ¿complemento o sustituto del estudiante?",
+              meta: "Revista e-pública · septiembre de 2025",
+              desc:
+                "Artículo académico que analiza el uso de modelos de procesamiento del lenguaje natural en la elaboración de un Trabajo Fin de Grado en fiscalidad internacional. Metodología basada en ingeniería de prompts y comparación sistemática entre convenios de doble imposición y el Modelo de Convenio de la OCDE.",
+              links: [{ text: "Leer en e-pública", url: "https://e-publica.unizar.es/es/articulo/evaluacion-de-la-ia-como-herramienta-durante-el-trabajo-fin-de-grado-de-ambito-fiscal-complemento-o-sustituto-del-estudiante" }]
+            },
+            {
+              title: "IVA en operaciones intragrupo: alcance del régimen de sujeto pasivo único según el TJUE (C-184/23)",
+              meta: "Expansión & LEX · 2025",
+              desc:
+                "Comentario jurisprudencial sobre la interpretación del TJUE en materia de IVA intragrupo, con especial atención al régimen de sujeto pasivo único y sus implicaciones.",
+              links: [
+                { text: "Leer en Expansión", url: "https://www.expansion.com/fiscal/impuestos-y-normativas/2025/03/11/67d0abade5fdea9d328b4586.html" },
+                { text: "Leer en LEX", url: "https://lex.ahk.es/actualidad-juridica/iva-en-operaciones-intragrupo-ultimas-reflexiones-del-tjue" }
+              ]
+            },
+            {
+              title: "Identification of Unconventional Patterns in Double Taxation Agreements: An Analysis Based on AI-Assisted NLP Models",
+              meta: "TFG · UCM · enero de 2025 · Matrícula de Honor",
+              desc:
+                "Análisis comparado de CDI suscritos por España con distintos países frente al Modelo de Convenio OCDE (2017), apoyado en IA aplicada al NLP.",
+              links: [{ text: "Repositorio UCM", url: "https://hdl.handle.net/20.500.14352/118839" }]
+            },
+            {
+              title: "Taller preparatorio del monográfico especial de e-pública sobre los usos docentes de las herramientas de IA",
+              meta: "e-pública / ICEI · Participación académica",
+              desc:
+                "Participación en el taller preparatorio del número monográfico especial, dedicado a experiencias docentes y debate sobre IA en docencia universitaria.",
+              links: [{ text: "Ver publicación (LinkedIn)", url: "https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1/details/publications/" }],
+              photo: { src: IMG.icei, alt: "Taller ICEI / e-pública (foto)" }
+            }
+          ]
+        },
+
+        contact: {
+          title: "Contacto Profesional",
+          intro: "Este formulario tiene por objeto solicitar un primer contacto profesional en relación con los servicios descritos en esta web. La información facilitada permitirá valorar de forma preliminar la cuestión planteada y determinar, en su caso, los siguientes pasos.",
+          response: "Responderé a la mayor brevedad posible.",
+          fields: {
+            name: "Nombre y apellidos *",
+            email: "Correo electrónico *",
+            phone: "Teléfono de contacto (Opcional, recomendado)",
+            profile: "Perfil del solicitante *",
+            scope: "Ámbito del asunto *",
+            desc: "Breve descripción del asunto (5 a 8 líneas máximo) *",
+            check: "He leído y acepto la Política de Privacidad",
+            submit: "Solicitar contacto profesional"
+          },
+          profileOptions: ["Persona física", "Persona jurídica (empresa / sociedad)", "Profesional o despacho", "Otro"],
+          scopeOptions: [
+            "Residencia fiscal y cambios de residencia",
+            "Tributación de rentas del trabajo (España y/o extranjero)",
+            "Fiscalidad internacional y convenios de doble imposición",
+            "Tributación de no residentes en España",
+            "Procedimientos tributarios (requerimientos, inspecciones, recursos)",
+            "Fiscalidad de autónomos y profesionales",
+            "Fiscalidad inmobiliaria",
+            "IVA y fiscalidad indirecta",
+            "Fiscalidad de sociedades y pymes",
+            "Sucesiones y planificación patrimonial",
+            "Reestructuraciones y contingencias fiscales",
+            "Coordinación fiscal con otros países o asesores externos",
+            "Derecho Civil",
+            "Derecho Laboral",
+            "Derecho Administrativo",
+            "Derecho Mercantil",
+            "Derecho Penal",
+            "Derecho Digital y Nuevas Tecnologías",
+            "Otro asunto"
+          ],
+          legal: "El envío de este formulario no implica la aceptación del encargo, ni la existencia de una relación abogado-cliente. La información facilitada será tratada con la finalidad de gestionar la solicitud de contacto y conforme a la normativa vigente en materia de protección de datos. No se prestan, a través de este formulario, servicios de defensa o representación legal reservados a la abogacía colegiada."
+        },
+
+        legalModal: {
+          title: "Aviso legal y Política de Privacidad",
+          note: null,
+          sections: [
+            { h:"Aviso legal (LSSI-CE)", p:[
+              "En cumplimiento de lo dispuesto en el artículo 10 de la Ley 34/2002 (LSSI-CE), se informa de:",
+              "Titular: Gonzalo Díaz-Heredero López",
+              "Condición profesional: Jurista en vías de colegiación como abogado",
+              "Correo electrónico: diazheredero01@gmail.com",
+              "Ámbito territorial: España",
+              "Este sitio tiene carácter informativo y divulgativo. La información publicada no constituye asesoramiento jurídico personalizado ni formaliza relación profesional."
+            ]},
+            { h:"Limitaciones profesionales", p:[
+              "No se prestan, a través de esta web, servicios de defensa o representación procesal reservados a la abogacía colegiada. Cualquier prestación personalizada quedará condicionada a la formalización previa del correspondiente encargo y, cuando resulte necesario, a la coordinación con profesionales colegiados."
+            ]},
+            { h:"Política de Privacidad (resumen)", p:[
+              "Los datos recabados mediante el formulario se tratarán para gestionar solicitudes de contacto profesional.",
+              "Base jurídica: consentimiento del interesado al enviar el formulario y aceptar la política.",
+              "No se cederán a terceros salvo obligación legal o proveedores necesarios para la gestión (p. ej., Formspree como encargado).",
+              "Derechos: acceso, rectificación, supresión, oposición, limitación y portabilidad, mediante solicitud al email de contacto."
+            ]},
+            { h:"Cookies y analítica", p:[
+              "Este sitio puede usar analítica respetuosa con la privacidad. No se usan cookies publicitarias por defecto."
+            ]},
+            { h:"Jurisdicción", p:[
+              "Para controversias, las partes se someten a Juzgados y Tribunales de Madrid (España), salvo norma imperativa en contrario."
+            ]}
+          ]
+        },
+
+        footer: { legal:"Aviso legal y Privacidad", rights:"Todos los derechos reservados." }
       },
 
       en: {
-        langLabel: "EN",
-        topTag: "Trilingual jurist (ES-EN-FR) · pre-bar admission",
-        headline: "Gonzalo Díaz-Heredero López",
-        subheadline:
-          "Specialising in Tax (Financial-Tax Law) and Procedural Law. Experience in tax planning (domestic & cross-border) and civil/tax litigation support. Focus: solving complex matters with legal certainty and effectiveness.",
-        ctas: { primary: "Contact", secondary: "Services" },
-        notice:
-          "Professional note: until bar admission, I do not provide court representation reserved to licensed attorneys. I can deliver analysis, drafting, documentation prep and coordination with a licensed lawyer when needed.",
-        sections: { services: "Services", profile: "Professional profile", languages: "Languages", contact: "Contact" },
-        serviceCards: [
-          {
-            title: "Real estate taxation",
-            bullets: [
-              "End-to-end transaction analysis (income/corporate/non-resident taxes, VAT vs transfer tax, local taxes where applicable).",
-              "Contract/deed review and fact-document consistency.",
-              "Scenario & risk memo before buy/sell/lease."
-            ]
-          },
-          {
-            title: "VAT and indirect taxation",
-            bullets: [
-              "Qualification: taxable/non-taxable, place of supply, exemptions and special regimes.",
-              "Reverse charge, invoicing and input VAT deduction.",
-              "Written position and consistency checks (contract-invoice-economic reality)."
-            ]
-          },
-          {
-            title: "International tax",
-            bullets: [
-              "Tax residence, tie-breakers and DTTs.",
-              "Cross-border income and withholding mapping.",
-              "Practical compliance plan and risk overview."
-            ]
-          },
-          {
-            title: "Civil & commercial",
-            bullets: [
-              "Contract drafting/review (leases, sale, services, agreements).",
-              "Dispute prevention: clauses, warranties and documentation structure.",
-              "Strategic analysis for breach scenarios."
-            ]
-          },
-          {
-            title: "Employment",
-            bullets: [
-              "Review of employment contracts and core documentation.",
-              "Risk analysis for disciplinary measures and termination.",
-              "Documentation prep and strategy support (coordinated with counsel if needed)."
-            ]
-          },
-          {
-            title: "Criminal",
-            bullets: [
-              "Initial case analysis, timeline and evidence organisation.",
-              "Facts memo and evidence pack for coordination with defence counsel.",
-              "Pre-procedural strategic support (no reserved representation)."
-            ]
-          }
-        ],
-        profileItems: [
-          {
-            org: "Bufete Arroyo Romero",
-            role: "Legal Trainee (6 months) · Civil & tax litigation",
-            bullets: ["Legal research (legislation, case law, doctrine).", "Legal opinions and memos.", "Procedural strategy support."]
-          }
-        ],
-        languagesList: [{ k: "Spanish", v: "Native" }, { k: "English", v: "C2" }, { k: "French", v: "B2" }],
-        contactIntro: "Share a short overview of your matter. If it fits, I will propose next steps and scope.",
-        form: {
-          name: "Name",
-          email: "Email",
-          service: "Area",
-          serviceOptions: ["General", "Real estate tax", "VAT", "International tax", "Civil/Commercial", "Employment", "Criminal"],
-          message: "Message",
-          submit: "Send",
-          sending: "Sending…",
-          sentOk: "Message sent. Thank you. I will reply as soon as possible.",
-          sentErr: "Could not send. Please review the form and try again."
+        meta: { title: "Gonzalo Díaz-Heredero López | GDHL" },
+        nav: { home:"Home", profile:"Profile", awards:"Awards", publications:"Publications", tax:"Tax Advisory", legal:"Legal Advisory", contact:"Contact", tagline:"Legal & Tax" },
+        ui: { clickMore:"Click for more details", clickSeeAll:"... click to see all services", email:"Email", linkedin:"LinkedIn" },
+        serviceModal: { keyPoints:"Key points", cta:"Request professional contact" },
+        hero: {
+          role: "Trilingual Jurist (ES-EN-FR)",
+          subrole: "Pre-bar admission in Spain. Specialising in Financial-Tax Law and Procedural Law, with experience in domestic and international tax planning and civil/tax litigation support.",
+          quote: "Iustitia omnibus, non privilegium paucis.",
+          targetTitle: "Tax advice to individuals and companies, in particular:",
+          targets: [
+            "SMEs with international activity/projection",
+            "Qualified professionals and executives",
+            "Freelancers and entrepreneurs",
+            "Digital nomads and posted workers",
+            "Partners, directors and founders of companies",
+            "Private investors with cross-border interests",
+            "Individuals with income/assets/residence in more than one country",
+            "Other individuals or companies needing legal support"
+          ],
+          noteTitle: "Professional note",
+          note: "Until bar admission, I do not provide court representation reserved to licensed attorneys. I can provide analysis, drafting, documentation preparation and coordination with counsel when required.",
+          cta: "Request professional contact"
         },
-        footer: "© " + new Date().getFullYear() + " Gonzalo Díaz-Heredero López · Informational website"
+        // Todo lo demás hace fallback automático a ES para no perder contenido
       },
 
       fr: {
-        langLabel: "FR",
-        topTag: "Juriste trilingue (ES-EN-FR) · en voie d’admission",
-        headline: "Gonzalo Díaz-Heredero López",
-        subheadline:
-          "Spécialisation en Droit fiscal (financier-fiscal) et Droit procédural. Expérience en planification fiscale (nationale & internationale) et appui en contentieux civil et fiscal. Objectif : sécurité juridique et efficacité.",
-        ctas: { primary: "Contacter", secondary: "Services" },
-        notice:
-          "Note professionnelle : jusqu’à mon admission, je n’assure pas la représentation réservée aux avocats. Je peux fournir analyse, rédaction, préparation documentaire et coordination avec un avocat inscrit si nécessaire.",
-        sections: { services: "Services", profile: "Profil professionnel", languages: "Langues", contact: "Contact" },
-        serviceCards: [
-          {
-            title: "Fiscalité immobilière",
-            bullets: [
-              "Analyse globale (impôts sur le revenu/sociétés/non-résidents, TVA vs droits de mutation, taxes locales si applicable).",
-              "Relecture contrats/actes et cohérence faits-documents.",
-              "Note de scénarios, risques et points critiques."
-            ]
-          },
-          {
-            title: "TVA et fiscalité indirecte",
-            bullets: [
-              "Qualification : assujettissement, lieu, exonérations et régimes spéciaux.",
-              "Autoliquidation, facturation et droit à déduction.",
-              "Position écrite et contrôle de cohérence."
-            ]
-          },
-          {
-            title: "Fiscalité internationale",
-            bullets: [
-              "Résidence fiscale, conflits et conventions fiscales.",
-              "Revenus transfrontaliers et retenues à la source.",
-              "Plan de conformité et cartographie des risques."
-            ]
-          },
-          {
-            title: "Droit civil & commercial",
-            bullets: [
-              "Rédaction/relecture de contrats (baux, vente, services, accords).",
-              "Prévention des litiges : clauses, garanties, documentation.",
-              "Analyse stratégique en cas d’inexécution."
-            ]
-          },
-          {
-            title: "Droit du travail",
-            bullets: [
-              "Relecture de contrats de travail et documents essentiels.",
-              "Analyse des risques (discipline, rupture).",
-              "Préparation documentaire et appui stratégique (coordination si besoin)."
-            ]
-          },
-          {
-            title: "Droit pénal",
-            bullets: [
-              "Analyse initiale, chronologie, organisation des pièces.",
-              "Note de faits et dossier de preuve pour la défense.",
-              "Appui en amont (sans représentation réservée)."
-            ]
-          }
-        ],
-        profileItems: [
-          {
-            org: "Bufete Arroyo Romero",
-            role: "Legal Trainee (6 mois) · Contentieux civil et fiscal",
-            bullets: ["Recherche (textes, jurisprudence, doctrine).", "Avis et notes juridiques.", "Appui stratégie procédurale."]
-          }
-        ],
-        languagesList: [{ k: "Espagnol", v: "Natif" }, { k: "Anglais", v: "C2" }, { k: "Français", v: "B2" }],
-        contactIntro: "Décris brièvement ton besoin. Si c’est pertinent, je te propose la suite et le périmètre.",
-        form: {
-          name: "Nom",
-          email: "Email",
-          service: "Domaine",
-          serviceOptions: ["Général", "Fiscalité immobilière", "TVA", "Fiscalité internationale", "Civil/Commercial", "Travail", "Pénal"],
-          message: "Message",
-          submit: "Envoyer",
-          sending: "Envoi…",
-          sentOk: "Message envoyé. Merci. Je répondrai dès que possible.",
-          sentErr: "Envoi impossible. Vérifie le formulaire et réessaie."
+        meta: { title: "Gonzalo Díaz-Heredero López | GDHL" },
+        nav: { home:"Accueil", profile:"Profil", awards:"Prix", publications:"Publications", tax:"Conseil fiscal", legal:"Conseil juridique", contact:"Contact", tagline:"Legal & Tax" },
+        ui: { clickMore:"Cliquer pour plus de détails", clickSeeAll:"... cliquer pour voir tous les services", email:"Email", linkedin:"LinkedIn" },
+        serviceModal: { keyPoints:"Points clés", cta:"Demander un contact professionnel" },
+        hero: {
+          role: "Juriste trilingue (ES-EN-FR)",
+          subrole: "Admission au barreau espagnol en cours. Spécialisation en droit fiscal-financier et droit procédural, avec expérience en planification fiscale nationale et internationale et appui contentieux.",
+          quote: "Iustitia omnibus, non privilegium paucis.",
+          targetTitle: "Conseil fiscal aux personnes et sociétés, notamment :",
+          targets: [
+            "PME à projection internationale",
+            "Cadres et professionnels qualifiés",
+            "Indépendants et entrepreneurs",
+            "Nomades numériques et travailleurs détachés",
+            "Associés, administrateurs et fondateurs",
+            "Investisseurs privés transfrontaliers",
+            "Personnes avec revenus/patrimoine/résidence dans plusieurs pays",
+            "Autres besoins juridiques"
+          ],
+          noteTitle: "Note professionnelle",
+          note: "Jusqu’à l’admission, je n’assure pas la représentation réservée aux avocats. Je peux fournir analyse, rédaction, préparation documentaire et coordination avec un avocat inscrit si nécessaire.",
+          cta: "Demander un contact professionnel"
         },
-        footer: "© " + new Date().getFullYear() + " Gonzalo Díaz-Heredero López · Site informatif"
+        // Resto: fallback automático a ES
       }
     };
 
-    function Badge({ children }) {
-      return (
-        <span className="inline-flex items-center rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-semibold text-zinc-700 shadow-sm">
-          {children}
-        </span>
-      );
-    }
+    // Fallback ES para claves no traducidas
+    const getPath = (obj, path) => path.split(".").reduce((acc, k) => (acc && acc[k] !== undefined ? acc[k] : undefined), obj);
+    const T = (lang, path) => {
+      const v = getPath(translations[lang], path);
+      if (v !== undefined) return v;
+      return getPath(translations.es, path);
+    };
 
-    function Card({ title, children }) {
-      return (
-        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-soft">
-          <h3 className="text-xl font-semibold text-zinc-900">{title}</h3>
-          <div className="mt-4 text-sm leading-relaxed text-zinc-700">{children}</div>
-        </div>
-      );
-    }
+    // =========================
+    // UI helpers
+    // =========================
+    const LanguageSwitcher = ({ current, setLang }) => (
+      <div className="flex space-x-2 text-sm font-semibold" aria-label="Language switcher">
+        {["es","en","fr"].map(code => (
+          <button
+            key={code}
+            type="button"
+            onClick={() => setLang(code)}
+            className={`px-2 py-1 rounded ${current === code ? "bg-slate-900 text-white" : "text-slate-700 hover:bg-slate-200"}`}
+          >
+            {code.toUpperCase()}
+          </button>
+        ))}
+      </div>
+    );
 
-    function Icon({ name, className = "" }) {
-      // Lucide con data-lucide
-      return <i data-lucide={name} className={className}></i>;
-    }
+    const SectionTitle = ({ children }) => (
+      <h2 className="text-3xl font-bold text-slate-800 mb-8 border-b-2 border-amber-600 pb-2 inline-block serif">
+        {children}
+      </h2>
+    );
 
-    function App() {
+    const Card = ({ title, subtitle, children }) => (
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-100 hover:shadow-md transition-shadow mb-4">
+        <h3 className="text-xl font-bold text-slate-900 serif">{title}</h3>
+        {subtitle && <p className="text-amber-700 font-medium mt-1">{subtitle}</p>}
+        <div className="text-slate-700 text-sm leading-relaxed mt-3">{children}</div>
+      </div>
+    );
+
+    // =========================
+    // MAIN APP
+    // =========================
+    const App = () => {
       const [lang, setLang] = useState("es");
-      const t = CONTENT[lang];
+      const [activeSection, setActiveSection] = useState("home");
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      const [showLegal, setShowLegal] = useState(false);
+      const [selectedService, setSelectedService] = useState(null);
+      const [formStatus, setFormStatus] = useState({ state: "idle", msg: "" });
 
-      const [form, setForm] = useState({ name: "", email: "", service: "General", message: "" });
-      const [status, setStatus] = useState({ state: "idle", msg: "" });
+      // Persist language + set html lang + title
+      useEffect(() => {
+        const saved = localStorage.getItem("lang");
+        if (saved && translations[saved]) setLang(saved);
+      }, []);
 
       useEffect(() => {
-        // Render lucide icons
-        if (window.lucide) window.lucide.createIcons();
-      });
+        localStorage.setItem("lang", lang);
+        document.documentElement.lang = lang;
+        document.title = T(lang, "meta.title") || "GDHL";
+      }, [lang]);
 
-      const subject = useMemo(() => {
-        const who = (form.name || "Contacto").trim();
-        const area = (form.service || "General").trim();
-        return `ENCARGO | ${who} | ${area}`;
-      }, [form.name, form.service]);
+      const navItems = useMemo(() => ([
+        { id:"home", label:T(lang,"nav.home") },
+        { id:"profile", label:T(lang,"nav.profile") },
+        { id:"awards", label:T(lang,"nav.awards") },
+        { id:"publications", label:T(lang,"nav.publications") },
+        { id:"tax", label:T(lang,"nav.tax") },
+        { id:"legal", label:T(lang,"nav.legal") },
+        { id:"contact", label:T(lang,"nav.contact") },
+      ]), [lang]);
 
-      async function handleSubmit(e) {
+      const goTo = (id) => {
+        setActiveSection(id);
+        setMobileMenuOpen(false);
+        setSelectedService(null);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const LegalModal = () => (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+          <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[85vh] overflow-y-auto p-8 relative legal-scroll">
+            <button type="button" onClick={() => setShowLegal(false)} className="absolute top-4 right-4 text-slate-600 hover:text-black bg-slate-100 rounded-full p-2" aria-label="Close">
+              <Icons.X className="w-6 h-6" />
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4 serif border-b pb-2">{T(lang,"legalModal.title")}</h2>
+
+            <div className="space-y-6 text-sm text-slate-700 leading-relaxed">
+              {T(lang,"legalModal.sections").map((sec, idx) => (
+                <div key={idx}>
+                  <h3 className="font-bold text-slate-900 text-base mb-2">{sec.h}</h3>
+                  {sec.p?.map((line, j) => (
+                    <p key={j} className="mb-2">{line}</p>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+      const ServiceModal = () => {
+        if (!selectedService) return null;
+        const IconComponent = Icons[selectedService.icon] || Icons.Scale;
+
+        return (
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+            <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 relative">
+              <button type="button" onClick={() => setSelectedService(null)} className="absolute top-4 right-4 text-slate-600 hover:text-black bg-slate-100 rounded-full p-2" aria-label="Close">
+                <Icons.X className="w-6 h-6" />
+              </button>
+
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-slate-100 rounded-full mr-4">
+                  <IconComponent className="w-8 h-8 text-slate-900"/>
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 serif">{selectedService.title}</h2>
+              </div>
+
+              <div className="text-slate-700 leading-relaxed space-y-4">
+                {selectedService.desc && <p className="text-base">{selectedService.desc}</p>}
+
+                {selectedService.list && (
+                  <div className="mt-4 bg-slate-50 p-5 rounded-lg border border-slate-100">
+                    <h3 className="font-bold text-slate-900 mb-3 border-b pb-2">{T(lang,"serviceModal.keyPoints")}</h3>
+                    <ul className="space-y-2 text-sm">
+                      {selectedService.list.map((item, i) => (
+                        <li key={i} className="flex items-start">
+                          <Icons.Check className="w-4 h-4 text-amber-700 mt-0.5 mr-2"/>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {selectedService.endDesc && (
+                  <div className="mt-4 p-4 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-sm">
+                    {selectedService.endDesc}
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-8 pt-4 border-t flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => { setSelectedService(null); goTo("contact"); }}
+                  className="bg-slate-900 text-white px-6 py-2 rounded hover:bg-slate-800 transition shadow"
+                >
+                  {T(lang,"serviceModal.cta")}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // ---------- Formspree submit ----------
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        setStatus({ state: "sending", msg: "" });
+        setFormStatus({ state:"sending", msg:"" });
+
+        const form = e.target;
+        const fd = new FormData(form);
+
+        // Subject must include ENCARGO
+        const name = (fd.get("name") || "").toString().trim() || "Contacto";
+        const scope = (fd.get("scope") || "").toString().trim() || "Asunto";
+        const subject = `ENCARGO | ${name} | ${scope}`;
+        fd.set("_subject", subject);
+        // Reply-to
+        const email = (fd.get("email") || "").toString().trim();
+        if (email) fd.set("_replyto", email);
 
         try {
-          const fd = new FormData(e.target);
-          // Seguridad: forzamos el subject con "ENCARGO"
-          fd.set("_subject", subject);
-
-          const res = await fetch(FORMSPREE_, {
+          const res = await fetch(FORMSPREE_ENDPOINT, {
             method: "POST",
             body: fd,
             headers: { "Accept": "application/json" }
           });
 
           if (res.ok) {
-            setStatus({ state: "success", msg: t.form.sentOk });
-            setForm({ name: "", email: "", service: "General", message: "" });
+            form.reset();
+            setFormStatus({ state:"success", msg: lang === "es" ? "Mensaje enviado. Responderé a la mayor brevedad posible." : (lang === "fr" ? "Message envoyé. Je répondrai dès que possible." : "Message sent. I will reply as soon as possible.") });
           } else {
-            setStatus({ state: "error", msg: t.form.sentErr });
+            setFormStatus({ state:"error", msg: lang === "es" ? "No se ha podido enviar. Inténtalo de nuevo." : (lang === "fr" ? "Envoi impossible. Réessaie." : "Could not send. Please try again.") });
           }
         } catch (err) {
-          setStatus({ state: "error", msg: t.form.sentErr });
+          setFormStatus({ state:"error", msg: lang === "es" ? "Error de red. Inténtalo de nuevo." : (lang === "fr" ? "Erreur réseau. Réessaie." : "Network error. Please try again.") });
         }
-      }
+      };
 
-      return (
-        <div className="min-h-screen">
-          {/* Top bar */}
-          <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50">
-                  <span className="font-semibold tracking-tight">GD</span>
-                </div>
-                <div className="leading-tight">
-                  <div className="text-sm font-semibold">{t.headline}</div>
-                  <div className="text-xs text-zinc-600">{t.topTag}</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <nav className="hidden items-center gap-2 md:flex">
-                  <a href="#servicios" className="rounded-full px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">{t.sections.services}</a>
-                  <a href="#perfil" className="rounded-full px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">{t.sections.profile}</a>
-                  <a href="#idiomas" className="rounded-full px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">{t.sections.languages}</a>
-                  <a href="#contacto" className="rounded-full px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">{t.sections.contact}</a>
-                </nav>
-
-                <div className="flex items-center rounded-full border border-zinc-200 bg-white p-1">
-                  {["es","en","fr"].map(code => (
-                    <button
-                      key={code}
-                      onClick={() => setLang(code)}
-                      className={
-                        "rounded-full px-3 py-1 text-xs font-semibold " +
-                        (lang === code ? "bg-zinc-900 text-white" : "text-zinc-700 hover:bg-zinc-100")
-                      }
-                      aria-label={"Cambiar idioma a " + code}
-                    >
-                      {CONTENT[code].langLabel}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </header>
-
-          {/* Hero */}
-          <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-            <div className="grid gap-10 md:grid-cols-2 md:items-center">
-              <div>
-                <div className="flex flex-wrap gap-2">
-                  <Badge><Icon name="shield" className="mr-2 inline h-4 w-4" />Enfoque: seguridad jurídica</Badge>
-                  <Badge><Icon name="languages" className="mr-2 inline h-4 w-4" />ES · EN · FR</Badge>
-                  <Badge><Icon name="file-text" className="mr-2 inline h-4 w-4" />Análisis y redacción</Badge>
-                </div>
-
-                <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
-                  {t.headline}
-                </h1>
-                <p className="mt-4 text-base leading-relaxed text-zinc-700 md:text-lg">
-                  {t.subheadline}
-                </p>
-
-                <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
-                  <div className="flex gap-3">
-                    <div className="mt-0.5">
-                      <Icon name="info" className="h-5 w-5" />
+      // =========================
+      // RENDER
+      // =========================
+      const renderContent = () => {
+        switch (activeSection) {
+          case "home":
+            return (
+              <div className="fade-in max-w-5xl mx-auto py-10">
+                <div className="grid md:grid-cols-12 gap-8 items-center">
+                  <div className="md:col-span-5">
+                    <div className="bg-white p-3 rounded-2xl border border-slate-200 img-shadow">
+                      <img
+                        src={IMG.profile}
+                        alt="Gonzalo Díaz-Heredero López"
+                        className="w-full h-[420px] object-cover rounded-xl"
+                      />
                     </div>
-                    <p className="leading-relaxed">{t.notice}</p>
+                  </div>
+
+                  <div className="md:col-span-7">
+                    <h1 className="text-5xl font-bold text-slate-900 mb-3 serif">Gonzalo Díaz-Heredero López</h1>
+                    <p className="text-xl text-slate-700 mb-2 font-medium">{T(lang,"hero.role")}</p>
+                    <p className="text-sm text-slate-600 mb-6 leading-relaxed">{T(lang,"hero.subrole")}</p>
+
+                    <blockquote className="italic text-2xl font-serif text-slate-800 border-l-4 border-amber-600 pl-4 py-2 inline-block bg-white shadow-sm mb-6">
+                      “{T(lang,"hero.quote")}”
+                    </blockquote>
+
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 mb-6">
+                      <h3 className="font-bold text-base mb-3 text-slate-800 border-b pb-2">{T(lang,"hero.targetTitle")}</h3>
+                      <ul className="grid md:grid-cols-2 gap-x-6 gap-y-2">
+                        {T(lang,"hero.targets").map((item, idx) => (
+                          <li key={idx} className="flex items-start text-sm text-slate-700">
+                            <span className="mr-2 text-amber-600 mt-1">•</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 mb-6">
+                      <div className="font-bold mb-1">{T(lang,"hero.noteTitle")}</div>
+                      <div>{T(lang,"hero.note")}</div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => goTo("contact")}
+                      className="bg-slate-900 text-white px-8 py-3 rounded hover:bg-slate-800 transition shadow-lg text-base"
+                    >
+                      {T(lang,"hero.cta")}
+                    </button>
                   </div>
                 </div>
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href="#contacto"
-                    className="inline-flex items-center justify-center rounded-2xl bg-zinc-900 px-5 py-3 text-sm font-semibold text-white shadow-soft hover:bg-zinc-800"
-                  >
-                    <Icon name="mail" className="mr-2 h-5 w-5" />
-                    {t.ctas.primary}
-                  </a>
-                  <a
-                    href="#servicios"
-                    className="inline-flex items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-sm font-semibold text-zinc-800 shadow-soft hover:bg-zinc-100"
-                  >
-                    <Icon name="briefcase" className="mr-2 h-5 w-5" />
-                    {t.ctas.secondary}
-                  </a>
-                </div>
               </div>
+            );
 
-              {/* Imagen (opcional) */}
-              <div className="relative">
-                <div className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-soft">
-                  <!--
-                    2) Sube una imagen a /assets/hero.jpg y descomenta la etiqueta <img>.
-                    En GitHub Pages: crea carpeta "assets" al lado de index.html.
-                  -->
-                  {/* <img src="./assets/hero.jpg" alt="Retrato" className="h-[420px] w-full object-cover" /> */}
-                  <div className="flex h-[420px] items-center justify-center bg-zinc-50 text-sm text-zinc-500">
-                    (Opcional) Añade /assets/hero.jpg
+          case "profile":
+            return (
+              <div className="fade-in max-w-6xl mx-auto">
+                <SectionTitle>{T(lang,"profile.title")}</SectionTitle>
+
+                <div className="grid md:grid-cols-12 gap-8 mb-10">
+                  <div className="md:col-span-4">
+                    <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                      <img
+                        src={IMG.profile}
+                        alt="Gonzalo Díaz-Heredero López"
+                        className="w-full h-[360px] object-cover rounded-xl"
+                      />
+                      <div className="text-xs text-slate-500 mt-2">{T(lang,"profile.photoLabel")}</div>
+                    </div>
+
+                    <div className="mt-4 bg-white p-5 rounded-xl border border-slate-100">
+                      <div className="text-sm font-bold text-slate-800 mb-2">{T(lang,"profile.motto")}</div>
+                      <div className="text-xs text-slate-600 leading-relaxed">
+                        Enfoque práctico, criterio técnico y comunicación clara. Trabajo orientado a documentación defendible y coherencia entre hechos, contratos y ejecución.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-8">
+                    <h3 className="text-2xl font-bold mb-5 flex items-center text-slate-800 border-b pb-2">
+                      <Icons.Briefcase className="w-6 h-6 mr-2 text-amber-700" /> {T(lang,"profile.exp")}
+                    </h3>
+
+                    {T(lang,"profile.jobs").map((job, i) => (
+                      <div key={i} className="mb-6 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <div className="flex justify-between flex-wrap mb-2 gap-2">
+                          <h4 className="text-xl font-bold text-slate-900">{job.company}</h4>
+                          <span className="bg-slate-100 text-slate-700 px-3 py-1 rounded text-sm font-semibold">{job.role}</span>
+                        </div>
+                        {job.desc && <p className="text-slate-500 text-sm mb-3 italic">{job.desc}</p>}
+                        <ul className="space-y-2">
+                          {job.tasks.map((task, j) => (
+                            <li key={j} className="flex items-start text-sm text-slate-700">
+                              <span className="mr-2 text-slate-400">•</span>
+                              {task}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+
+                    <h3 className="text-2xl font-bold mb-5 flex items-center text-slate-800 border-b pb-2 mt-10">
+                      <Icons.BookOpen className="w-6 h-6 mr-2 text-amber-700" /> {T(lang,"profile.edu")}
+                    </h3>
+
+                    {T(lang,"profile.education").map((edu, i) => (
+                      <div key={i} className="mb-5 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <h4 className="text-xl font-bold text-slate-900 mb-1">{edu.institution}</h4>
+                        <p className="text-amber-700 font-medium mb-3">{edu.degree}</p>
+                        <ul className="space-y-2">
+                          {edu.details.map((det, j) => (
+                            <li key={j} className="text-sm text-slate-700 flex items-start">
+                              <span className="mr-2 text-slate-400">•</span>
+                              <span>{det}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+
+                    <h3 className="text-2xl font-bold mb-5 flex items-center text-slate-800 border-b pb-2 mt-10">
+                      <Icons.Globe className="w-6 h-6 mr-2 text-amber-700" /> {T(lang,"profile.lang")}
+                    </h3>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {T(lang,"languages.list").map((l, idx) => (
+                        <div key={idx} className="bg-white p-4 text-center rounded-xl shadow-sm border border-slate-200">
+                          <div className="font-bold text-slate-800">{l.name}</div>
+                          <div className="text-amber-600 text-sm">{l.level}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            );
 
-          {/* Services */}
-          <section id="servicios" className="border-t border-zinc-200 bg-white">
-            <div className="mx-auto max-w-6xl px-4 py-12">
-              <div className="flex items-end justify-between gap-4">
-                <h2 className="text-3xl font-semibold tracking-tight">{t.sections.services}</h2>
-                <span className="text-sm text-zinc-500">Trabajo por encargo · análisis escrito · criterio fundamentado</span>
-              </div>
+          case "awards":
+            return (
+              <div className="fade-in max-w-5xl mx-auto">
+                <SectionTitle>{T(lang,"awards.title")}</SectionTitle>
 
-              <div className="mt-8 grid gap-6 md:grid-cols-2">
-                {t.serviceCards.map((s, idx) => (
-                  <Card key={idx} title={s.title}>
-                    <ul className="mt-2 list-disc space-y-2 pl-5">
-                      {s.bullets.map((b, i) => <li key={i}>{b}</li>)}
-                    </ul>
+                {T(lang,"awards.list").map((award, i) => (
+                  <Card key={i} title={award.title} subtitle={award.org}>
+                    <p className="mb-4 text-justify">{award.desc}</p>
+
+                    {award.photos && award.photos.length > 0 && (
+                      <div className="grid md:grid-cols-3 gap-4 mt-6">
+                        {award.photos.map((ph, k) => (
+                          <a key={k} href={ph.src} target="_blank" rel="noopener noreferrer" className="group">
+                            <div className="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition">
+                              <img src={ph.src} alt={ph.alt} className="w-full h-44 object-cover" />
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="flex flex-wrap gap-3 mt-6">
+                      {award.links.map((link, j) => (
+                        <a key={j} href={link.url} target="_blank" rel="noopener noreferrer"
+                          className="text-xs bg-slate-100 hover:bg-amber-100 text-amber-800 px-3 py-2 rounded-lg transition border border-slate-200 inline-flex items-center">
+                          <span className="mr-2">🔗</span> {link.text}
+                        </a>
+                      ))}
+                    </div>
                   </Card>
                 ))}
               </div>
-            </div>
-          </section>
+            );
 
-          {/* Profile */}
-          <section id="perfil" className="bg-zinc-50">
-            <div className="mx-auto max-w-6xl px-4 py-12">
-              <h2 className="text-3xl font-semibold tracking-tight">{t.sections.profile}</h2>
+          case "publications":
+            return (
+              <div className="fade-in max-w-5xl mx-auto">
+                <SectionTitle>{T(lang,"publications.title")}</SectionTitle>
 
-              <div className="mt-8 grid gap-6">
-                {t.profileItems.map((p, idx) => (
-                  <div key={idx} className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-soft">
-                    <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:justify-between">
-                      <div className="text-lg font-semibold">{p.org}</div>
-                      <div className="text-sm font-semibold text-zinc-600">{p.role}</div>
-                    </div>
-                    <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-zinc-700">
-                      {p.bullets.map((b, i) => <li key={i}>{b}</li>)}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+                <div className="space-y-6">
+                  {T(lang,"publications.list").map((pub, i) => (
+                    <Card key={i} title={pub.title} subtitle={pub.meta}>
+                      <p className="mb-4 text-justify">{pub.desc}</p>
 
-          {/* Languages */}
-          <section id="idiomas" className="border-t border-zinc-200 bg-white">
-            <div className="mx-auto max-w-6xl px-4 py-12">
-              <h2 className="text-3xl font-semibold tracking-tight">{t.sections.languages}</h2>
+                      {pub.photo && (
+                        <div className="mt-5">
+                          <a href={pub.photo.src} target="_blank" rel="noopener noreferrer">
+                            <div className="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                              <img src={pub.photo.src} alt={pub.photo.alt} className="w-full h-56 object-cover" />
+                            </div>
+                          </a>
+                        </div>
+                      )}
 
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                {t.languagesList.map((x, idx) => (
-                  <div key={idx} className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-                    <div className="text-sm font-semibold text-zinc-700">{x.k}</div>
-                    <div className="mt-1 text-2xl font-semibold text-zinc-900">{x.v}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Contact */}
-          <section id="contacto" className="bg-zinc-50">
-            <div className="mx-auto max-w-6xl px-4 py-12">
-              <div className="grid gap-8 md:grid-cols-2 md:items-start">
-                <div>
-                  <h2 className="text-3xl font-semibold tracking-tight">{t.sections.contact}</h2>
-                  <p className="mt-4 text-sm leading-relaxed text-zinc-700">{t.contactIntro}</p>
-
-                  <div className="mt-6 space-y-3 text-sm text-zinc-700">
-                    <div className="flex items-center gap-2">
-                      <Icon name="mail" className="h-4 w-4" />
-                      <a className="font-semibold underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-500"
-                         href="mailto:diazheredero01@gmail.com?subject=ENCARGO">
-                        diazheredero01@gmail.com
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Icon name="linkedin" className="h-4 w-4" />
-                      <span className="text-zinc-600">LinkedIn (añade tu URL)</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 text-xs leading-relaxed text-zinc-600">
-                    Este sitio es informativo y no constituye asesoramiento jurídico. La aceptación de un encargo se formaliza por escrito, definiendo alcance, plazos y honorarios.
-                  </div>
+                      <div className="flex flex-wrap gap-3 mt-5">
+                        {pub.links.map((link, j) => (
+                          <a key={j} href={link.url} target="_blank" rel="noopener noreferrer"
+                            className="text-xs font-semibold text-amber-700 hover:text-amber-900 border-b border-amber-200 hover:border-amber-900 inline-flex items-center">
+                            {link.text} <Icons.ChevronRight className="w-4 h-4 ml-1" />
+                          </a>
+                        ))}
+                      </div>
+                    </Card>
+                  ))}
                 </div>
+              </div>
+            );
 
-                <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-soft">
-                  <form onSubmit={handleSubmit}>
-                    {/* Anti-spam honeypot */}
-                    <input type="text" name="_gotcha" className="hidden" tabIndex="-1" autoComplete="off" />
+          case "tax":
+            return (
+              <div className="fade-in max-w-6xl mx-auto">
+                <SectionTitle>{T(lang,"services.taxTitle")}</SectionTitle>
 
-                    {/* Formspree subject */}
-                    <input type="hidden" name="_subject" value={subject} />
-
-                    <div className="grid gap-4">
-                      <div>
-                        <label className="text-xs font-semibold text-zinc-700">{t.form.name}</label>
-                        <input
-                          required
-                          value={form.name}
-                          onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          name="name"
-                          type="text"
-                          className="mt-1 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm outline-none focus:border-zinc-400"
-                          placeholder=""
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-xs font-semibold text-zinc-700">{t.form.email}</label>
-                        <input
-                          required
-                          value={form.email}
-                          onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          name="email"
-                          type="email"
-                          className="mt-1 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm outline-none focus:border-zinc-400"
-                          placeholder=""
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-xs font-semibold text-zinc-700">{t.form.service}</label>
-                        <select
-                          value={form.service}
-                          onChange={(e) => setForm({ ...form, service: e.target.value })}
-                          name="service"
-                          className="mt-1 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm outline-none focus:border-zinc-400"
-                        >
-                          {t.form.serviceOptions.map((opt, idx) => (
-                            <option key={idx} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="text-xs font-semibold text-zinc-700">{t.form.message}</label>
-                        <textarea
-                          required
-                          value={form.message}
-                          onChange={(e) => setForm({ ...form, message: e.target.value })}
-                          name="message"
-                          rows="6"
-                          className="mt-1 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm outline-none focus:border-zinc-400"
-                          placeholder=""
-                        ></textarea>
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={status.state === "sending"}
-                        className={
-                          "inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold shadow-soft " +
-                          (status.state === "sending"
-                            ? "bg-zinc-400 text-white"
-                            : "bg-zinc-900 text-white hover:bg-zinc-800")
-                        }
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {T(lang,"services.taxList").map((item, i) => {
+                    const IconComponent = Icons[item.icon] || Icons.Scale;
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => setSelectedService(item)}
+                        className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-slate-100 transition-all duration-300 flex flex-col justify-center items-center text-center group cursor-pointer card-hover"
+                        role="button"
+                        tabIndex="0"
                       >
-                        <Icon name="send" className="mr-2 h-5 w-5" />
-                        {status.state === "sending" ? t.form.sending : t.form.submit}
-                      </button>
-
-                      {status.state === "success" && (
-                        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-                          {status.msg}
+                        <div className="w-12 h-12 bg-slate-50 text-slate-800 rounded-full flex items-center justify-center mb-4 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                          <IconComponent className="w-6 h-6" />
                         </div>
-                      )}
-
-                      {status.state === "error" && (
-                        <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
-                          {status.msg}
-                        </div>
-                      )}
-
-                      <div className="text-[11px] text-zinc-500">
-                        El asunto del correo se enviará como: <span className="font-semibold">{subject}</span>
+                        <p className="text-slate-800 font-medium font-serif text-lg">{item.title}</p>
+                        <p className="text-xs text-slate-400 mt-2 italic">{T(lang,"ui.clickMore")}</p>
                       </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+
+          case "legal":
+            return (
+              <div className="fade-in max-w-6xl mx-auto">
+                <SectionTitle>{T(lang,"services.legalTitle")}</SectionTitle>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {T(lang,"services.legalAreas").map((area, i) => {
+                    const IconComponent = Icons[area.icon] || Icons.Scale;
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => setSelectedService({ title: area.area, desc: area.desc, list: area.items, icon: area.icon })}
+                        className="bg-white rounded-xl shadow-md border-t-4 border-amber-600 overflow-hidden hover:shadow-lg transition-all card-hover cursor-pointer"
+                        role="button"
+                        tabIndex="0"
+                      >
+                        <div className="bg-slate-50 p-4 border-b border-slate-100">
+                          <h4 className="font-bold text-slate-900 text-lg flex items-center">
+                            <IconComponent className="w-5 h-5 mr-2 text-amber-700" />
+                            {area.area}
+                          </h4>
+                          <div className="text-xs text-slate-500 mt-1">{area.desc}</div>
+                        </div>
+                        <div className="p-6">
+                          <ul className="space-y-3">
+                            {area.items.slice(0, 3).map((item, j) => (
+                              <li key={j} className="flex items-start text-slate-600 text-sm">
+                                <span className="mr-2 text-amber-500 mt-0.5">•</span>
+                                {item}
+                              </li>
+                            ))}
+                            {area.items.length > 3 && (
+                              <li className="text-xs text-slate-400 italic mt-2">{T(lang,"ui.clickSeeAll")}</li>
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+
+          case "contact":
+            return (
+              <div className="fade-in max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-slate-100">
+                <SectionTitle>{T(lang,"contact.title")}</SectionTitle>
+                <p className="mb-4 text-slate-700">{T(lang,"contact.intro")}</p>
+
+                <div className="p-3 bg-blue-50 text-blue-800 text-sm rounded mb-6 border border-blue-100 flex items-center">
+                  <Icons.Mail className="w-4 h-4 mr-2"/> {T(lang,"contact.response")}
+                </div>
+
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  {/* Honeypot */}
+                  <input type="text" name="_gotcha" className="hidden" tabIndex="-1" autoComplete="off" />
+
+                  {/* Subject (se sobreescribe en JS, pero lo dejamos por compatibilidad) */}
+                  <input type="hidden" name="_subject" value="ENCARGO" />
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{T(lang,"contact.fields.name")}</label>
+                    <input name="name" type="text" required className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 focus:ring-1 focus:ring-slate-800 outline-none" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1">{T(lang,"contact.fields.email")}</label>
+                      <input name="email" type="email" required className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none" />
                     </div>
-                  </form>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1">{T(lang,"contact.fields.phone")}</label>
+                      <input name="phone" type="tel" className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{T(lang,"contact.fields.profile")}</label>
+                    <select name="profile" className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none" required>
+                      {T(lang,"contact.profileOptions").map((option, i) => <option key={i} value={option}>{option}</option>)}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{T(lang,"contact.fields.scope")}</label>
+                    <select name="scope" className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none" required>
+                      {T(lang,"contact.scopeOptions").map((option, i) => <option key={i} value={option}>{option}</option>)}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1">{T(lang,"contact.fields.desc")}</label>
+                    <textarea name="message" rows="6" required className="w-full p-2 border border-slate-300 rounded focus:border-slate-800 outline-none"></textarea>
+                  </div>
+
+                  <div className="flex items-start bg-slate-50 p-3 rounded border border-slate-100">
+                    <input type="checkbox" required className="mt-1 mr-2" />
+                    <span className="text-sm text-slate-600">
+                      {T(lang,"contact.fields.check")}{" "}
+                      <button type="button" onClick={() => setShowLegal(true)} className="underline text-amber-700 hover:text-amber-900">
+                        ({T(lang,"footer.legal")})
+                      </button>
+                    </span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-slate-900 text-white font-bold py-3 rounded hover:bg-slate-800 transition disabled:opacity-60"
+                    disabled={formStatus.state === "sending"}
+                  >
+                    {T(lang,"contact.fields.submit")}
+                  </button>
+
+                  {formStatus.state === "success" && (
+                    <div className="mt-3 bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm rounded p-3">
+                      {formStatus.msg}
+                    </div>
+                  )}
+                  {formStatus.state === "error" && (
+                    <div className="mt-3 bg-rose-50 border border-rose-200 text-rose-900 text-sm rounded p-3">
+                      {formStatus.msg}
+                    </div>
+                  )}
+                </form>
+
+                <p className="mt-6 text-xs text-slate-400 text-justify border-t pt-4 leading-relaxed">
+                  {T(lang,"contact.legal")}
+                </p>
+              </div>
+            );
+
+          default:
+            return null;
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Navigation */}
+          <nav className="bg-white shadow-md sticky top-0 z-40 border-b border-slate-100">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="flex justify-between items-center h-20">
+                {/* Logo */}
+                <div className="flex-shrink-0 flex flex-col justify-center cursor-pointer" onClick={() => goTo("home")}>
+                  <span className="font-serif text-xl font-bold text-slate-900 tracking-tight">GDHL</span>
+                  <span className="text-xs text-amber-700 uppercase tracking-widest font-semibold">{T(lang,"nav.tagline")}</span>
+                </div>
+
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center space-x-8">
+                  <div className="flex space-x-6 text-sm font-medium text-slate-600">
+                    {navItems.map(item => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => goTo(item.id)}
+                        className={`hover:text-amber-700 transition-colors ${activeSection === item.id ? "text-amber-700 font-bold border-b-2 border-amber-700" : ""}`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="h-6 w-px bg-slate-300 mx-4"></div>
+                  <LanguageSwitcher current={lang} setLang={setLang} />
+                </div>
+
+                {/* Mobile Menu Button */}
+                <div className="md:hidden flex items-center">
+                  <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-700 p-2" aria-label="Menu">
+                    {mobileMenuOpen ? <Icons.X className="w-6 h-6" /> : <Icons.Menu className="w-6 h-6" />}
+                  </button>
                 </div>
               </div>
             </div>
-          </section>
+
+            {/* Mobile Menu Dropdown */}
+            {mobileMenuOpen && (
+              <div className="md:hidden bg-slate-50 border-t">
+                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                  {navItems.map(item => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => goTo(item.id)}
+                      className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-200 rounded"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                  <div className="px-3 py-2">
+                    <LanguageSwitcher current={lang} setLang={setLang} />
+                  </div>
+                </div>
+              </div>
+            )}
+          </nav>
+
+          {/* Main Content */}
+          <main className="flex-grow container mx-auto px-4 py-8">
+            {renderContent()}
+          </main>
 
           {/* Footer */}
-          <footer className="border-t border-zinc-200 bg-white">
-            <div className="mx-auto max-w-6xl px-4 py-8">
-              <div className="flex flex-col gap-2 text-sm text-zinc-600 md:flex-row md:items-center md:justify-between">
-                <div>{t.footer}</div>
-                <div className="flex items-center gap-4">
-                  <a href="#top" className="font-semibold hover:underline">↑</a>
-                  <!-- Si quieres, añade páginas legales: /aviso-legal.html /privacidad.html -->
-                </div>
+          <footer className="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+            <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+              <div className="mb-4 md:mb-0 text-sm">
+                &copy; {new Date().getFullYear()} Gonzalo Díaz-Heredero López. {T(lang,"footer.rights")}
+              </div>
+              <div className="flex space-x-6 text-sm">
+                <a href="mailto:diazheredero01@gmail.com?subject=ENCARGO" className="hover:text-white transition">{T(lang,"ui.email")}</a>
+                <a href="https://www.linkedin.com/in/gonzalo-d%C3%ADaz-heredero1" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">{T(lang,"ui.linkedin")}</a>
+                <button type="button" onClick={() => setShowLegal(true)} className="hover:text-white transition">{T(lang,"footer.legal")}</button>
               </div>
             </div>
           </footer>
+
+          {showLegal && <LegalModal />}
+          {selectedService && <ServiceModal />}
         </div>
       );
-    }
+    };
 
-    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
   </script>
 </body>
 </html>
